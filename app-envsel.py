@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 '''
-Usage: env-selector <app> <command> [options]
+Usage: env-selector <command> [app] [options]
 
 Commands:
-  list
-  set
+  init
   register
-  unset
   unregister
   remove
-  init
+  list
+  set
+  unset
 '''
 
 import os, sys
@@ -28,6 +28,7 @@ class app_envdata:
 
     def __init__(self):
         # Check data dir
+        self._data_dir = ""
         if path.isdir(app_data_sys):    self._data_dir = app_data_sys
         elif path.isdir(app_data_user): self._data_dir = app_data_user
         else:
@@ -37,6 +38,9 @@ class app_envdata:
         self.check_datadir()
         self.check_env_sys()
         self.check_env_user()
+        self._app_rc = path.join(self._data_dir,"app-rc")
+
+    def init_datadir(self): pass
 
     def check_datadir(self):
         '''Check the data directory to collect versions of application'''
@@ -69,6 +73,17 @@ class app_envdata:
     def check_env_sys(self):
         self._envsel_sys = self.check_envsel(app_env_sys)
 
+    def check_sh_rc(self, u_shrc='.bashrc', a_shrc='app-rc'):
+        f_rc_u = path.join(os.environ['HOME'],u_shrc)
+        f_rc_a = self._app_rc + '.sh'
+        rc_sappend = '[ -f %s ] && . %s\n'%(f_rc_a, f_rc_a)
+        rc_script = open(f_rc_u).readlines()
+        if rc_sappend in rc_script:
+            print "Env code has already been added to your startup script."
+        else:
+            print "Writing env code to your startup script ..."
+            open(f_rc_u,'a+').write(rc_sappend)
+
 class app_envsel(app_envdata):
     '''
     Class to manage evironments for one certain application.
@@ -77,7 +92,6 @@ class app_envsel(app_envdata):
       _lname    --- application's long name
       _desc     --- application's description
       _start_sh --- the startup shells
-      _data_dir --- the data directory contains environments
     '''
     def __init__(self,**kws):
         if not kws.has_key("name"):

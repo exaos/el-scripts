@@ -1,0 +1,39 @@
+#-*- mode: org; -*-
+#+TITLE: README about "app-envsel"
+
+* How to use app-envsel
+
+** Install and setup
+   + Install
+     1. Copy app-envsel.py to the directory in your PATH setting
+     2. chmod +x app-envsel.py
+     3. ln -s app-envsel.py app-envsel
+     4. Copy startup script to proper path
+	1) If system-wide, app-rc-sys.sh ==> /var/lib/app-envsel/app-rc.sh
+	2) If user-wide,  app-rc-user.sh ==> $HOME/.config/app-envsel/app-rc.sh
+   + Initialization
+     - System-wide setup ::  app-envsel init -s
+     - User-wide setup   ::  app-envsel init -u
+   + Setup application data
+     - Add one application version
+       * command: app-envsel register/reg <app> <version>
+     - Delete one application version
+       * command: app-envsel unregister/del <app> <version>
+     - Remove all versions of one application
+       * command: app-envsel remove/rm <app>
+
+** User commands
+   + List application's versions
+     - command: app-envsel list/ls [opt] [<app>]
+     - options
+   + Set version for <app>
+     - command: app-envsel set [opt] <app> <ver>
+     - options
+   + Unset version for <app>
+     - command: app-envsel unset [opt] [<app>]
+     - options
+
+* Code information
+
+* Changelog
+
