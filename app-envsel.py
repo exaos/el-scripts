@@ -11,15 +11,30 @@ Commands:
   set
   unset
 '''
-
 import os, sys
 import os.path as path
+from base64 import b64decode
+from zlib   import decompress
 
 # Check the data path
 app_data_sys = "/var/lib/app-envsel/data"
 app_env_sys  = "/var/lib/app-envsel/env"
 app_data_user= path.join(os.environ['HOME'],'.config/app-envsel/data')
 app_env_user = path.join(os.environ['HOME'],'.config/app-envsel/env')
+app_rc_enc='''
+eJyVVGFv2jAQ/Vz/isOgikgLKfvYLpNQybRJrJ0W9mEaVRqIAUtgR7ahYyz/fT4HkpTBpAkp
+2Jd3757vndNuBVMugmmql6QN9zLfKb5YGujOPHh707+B6GcqNYwYg3du2bPLbmq8xTrlq95M
+rt+/gfuH4Yi0bX6804at/ReeMUjzPFGznl7CXCrc+UxsNVtZ2JeNyqVmtzCWkCu5RbhZMtAm
+VWaTgwVyJcWaCXOaTAZRMhyMB0n8PQ6DbaqCFZ8GNSDIUpMiKI7Gw4sg+1cRfYujr2Hn4+Pn
+KLDHEXO+uEj3byiSkh/gZ9DZN1QW8ATX13CIhK/fIf4X0CpYUIBLeKxeEKKZSWyprkf2xIKx
+OSLs9N2az8ESzksBleQi6CAInu6wy4Jc2d027HQ1yyCYtIPsAv43IMIX0M89Rz/njSooG4lo
+qfekLh7uP8o24JeqstlSYpjGzBguFuDgt3WzLcEeQ0XidOHk9XpA/25MA7wtEFYp7J1lq4Dk
+yomgw8eHqFUSs5Vmx/CHwadRNKRN0Rth7XIW4WNLrH9OSuvVmBSVguqgdGgHDzKu2MxItQOu
+QUgDyIY3YkLrwZtQSpwMTK7nr+qr9QcNwvtoExK909aElQZ/cAL0zjG4gSgtPjJsNFNnKBzS
+I8ehTFZcm7D77I7jelglF429lVNYz40Cir+JoDgBUhnwN/Ds1e519u0jawH+wsBN7dvhIwFc
+HJhL1B1kEg73xY0LBoT1q7LlrFcum9goKUMHl6BxcaF5KWvYsZXQ7AkhfwDvIqFK
+'''
+app_rc_real=decompress(b64decode(app_rc_enc.replace('\n','')))
 
 class app_envdata:
     _start_sh = dict()
@@ -61,9 +76,8 @@ class app_envdata:
         envsel = dict()
         if not path.isdir(env_dir): return envsel
 
-        rdata = os.listdir(env_dir)
-        apps  = set([f.split('_') for f in rdata])
-        for a in apps: envsel[a] = filter(lambda x: x[:len(a)]==a, rdata)
+        apps = os.listdir(env_dir)
+        for a in apps: envsel[a] = "".join(open(a).readlines()[0]).strip()
         return envsel
 
     def check_env_user(self):
@@ -127,5 +141,5 @@ if __name__=='__main__':
     else:
         print "** ERROR **: Neither system-wide nor user-wide data directory exists!"
         sys.exit(1)
-    print "Reading data from %s"%(app_data_dir)
-
+    #print "Reading data from %s"%(app_data_dir)
+    print app_rc_real

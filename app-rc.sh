@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2007 Exaos Lee, CNDL
+# Copyright (c) 2010 Exaos Lee <Exaos.Lee(at)gmail.com>, CNDL
 #
 # System-wide app_rc.sh for app-envsel
 # Purpose: To provide the startup environment for app-envsel
@@ -11,24 +11,24 @@ AE_SETD_USER=$HOME/.config/app-envsel/env
 
 [ -d ${AE_DATA_SYS} ] && AE_DATA=${AE_DATA_SYS}
 [ -z "${AE_DATA}"   ] && AE_DATA=${AE_DATA_USER}
-echo ${AE_DATA}
 
 set_env()
 {
     appn=$1
-    [ -f ${AE_SETD_USER}/$appn ] && appv=$(cat ${AE_SETD_USER}/$appn)
-    if [ -z "$appv" ] && [ -f ${AE_SETD_SYS}/$appn ]; then
-	appv=$(cat ${AE_SETD_SYS}/$appn)
+    if [ -f ${AE_SETD_USER}/$appn ]; then
+	appv=$(sed /\#/d ${AE_SETD_USER}/$appn | sed -n 1p)
     fi
-    echo -n "Setting $appn: ${AE_DATA}/${appn}_$appv.sh ... "
+    if [ -z "$appv" ] && [ -f ${AE_SETD_SYS}/$appn ]; then
+	appv=$(sed /\#/d ${AE_SETD_SYS}/$appn | sed -n 1p)
+    fi
+    echo -n "Setting $appn: ${AE_DATA}/${appn}_$appv.sh .. "
     if [ -f ${AE_DATA}/${appv}.sh ]; then
 	. ${AE_DATA}/${appn}_${appv}.sh
 	echo "DONE!"
     else
 	echo "FAILED"
     fi
-    unset appv
-    unset app
+    unset appn appv
 }
 
 if [ ! -d ${AE_DATA} ]; then
@@ -45,5 +45,6 @@ else
     unset app_list
 fi
 
-unset AE_DATA
+unset AE_DATA AE_DATA_SYS AE_DATA_USER
+unset AE_SETD_SYS AE_SETD_USER
 
