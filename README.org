@@ -8,9 +8,6 @@
      1. Copy app-envsel.py to the directory in your PATH setting
      2. chmod +x app-envsel.py
      3. ln -s app-envsel.py app-envsel
-     4. Copy startup script to proper path
-	1) If system-wide, app-rc-sys.sh ==> /var/lib/app-envsel/app-rc.sh
-	2) If user-wide,  app-rc-user.sh ==> $HOME/.config/app-envsel/app-rc.sh
    + Initialization
      - System-wide setup ::  app-envsel init -s
      - User-wide setup   ::  app-envsel init -u
@@ -18,22 +15,33 @@
      - Add one application version
        * command: app-envsel register/reg <app> <version>
      - Delete one application version
-       * command: app-envsel unregister/del <app> <version>
+       * command: app-envsel remove/rm <app> <version>
      - Remove all versions of one application
-       * command: app-envsel remove/rm <app>
+       * command: app-envsel remove/rm <app> -a
 
 ** User commands
    + List application's versions
      - command: app-envsel list/ls [opt] [<app>]
-     - options
    + Set version for <app>
      - command: app-envsel set [opt] <app> <ver>
-     - options
+     - options: -s --- system-wide
    + Unset version for <app>
      - command: app-envsel unset [opt] [<app>]
-     - options
+     - options: -s --- system-wide
 
 * Code information
+  + app-envsel.py
+    - check both system- and user-wide data directory
+    - check both system- and user-wide setting for one app
+    - command processing
+  + Data structure
+    - Versions startup script is stored in data dir as <app>_<ver>.sh
+    - System- or user-wide selection is write to file <env-path>/<app>
+  + app-rc.sh
+    - encoded the zipped content in base64, and added to app-envsel.py
+    - First check user's setting then system's
+    - First check user's versions then system's
 
 * Changelog
+  + 2010-01-07: Initialized project
 
