@@ -2,7 +2,7 @@
 '''app-envsel: version manager for applications
 Version: 0.1-20100112
 
-Usage: app-envsel <command> [app] [options]
+Usage: app-envsel [--sys <path>] <command> [app] [options]
 
 Commands:
   init         ---  setup the environment for app-envsel
@@ -12,6 +12,13 @@ Commands:
   set          ---  choose one version for certain application
   unset        ---  unset one version for certain application
 
+Options:
+  Default system repository is set to /var/lib/app-envsel. If you want an
+  alternative path, please use option "--sys <path>" before other commands.
+
+  NOTE: If system repository is other than the default setting, the option
+     "--sys <path>" should be added each time you execute this command.
+
 Author: Exaos Lee <Exaos.Lee(at)gmail.com>, Jan. 2010
 '''
 import os, sys
@@ -20,7 +27,7 @@ from base64   import b64decode
 from zlib     import decompress
 
 # Check the data path
-data_dir_sys  = "/var/lib/app-envsel"
+data_dir_sysd = "/var/lib/app-envsel"
 data_dir_user = path.join(os.environ['HOME'],'.config/app-envsel')
 
 # app-rc.sh
@@ -69,7 +76,10 @@ class app_envdata:
         if not path.isfile(f_apprc):
             print "\tGenerating %s ..."%(f_apprc)
             app_rc_real=decompress(b64decode(app_rc_enc.replace('\n','')))
-            open(f_apprc,'w').write(app_rc_real)
+            if self._isSys and self._base_dir != data_dir_sysd:
+                txt = app_rc_real.replace(data_dir_sysd, self._base_dir)
+                open(f_apprc,'w').write(txt)
+            else: open(f_apprc,'w').write(app_rc_real)
 
     def check_datadir(self):
         '''Check the data directory to collect versions of application'''
@@ -242,19 +252,32 @@ class app_envsel:
             os.remove(self._fsel)
 
 def cmd_process(args):
+    errmsg = ["ERROR: Neither system nor user environemnt repository is found!",
+              "ERROR: System repository is not setup properly!",
+              "ERROR: User repository is not setup properly!",]
+    repo_dir_user = data_dir_user
+    if "--sys" in args:
+        idx = args.index('--sys')
+        if idx<len(args):
+            repo_dir_sys = args[idx+1]
+            args.remove("--sys")
+            args.remove(repo_dir_sys)
+        else:
+            print __doc__
+            return
+    else:
+        repo_dir_sys  = data_dir_sysd
+
     arglen = len(args)
     if arglen==0 or args[0]=="":
         print __doc__
         return
 
-    errmsg = ["ERROR: Neither system nor user environemnt repository is found!",
-              "ERROR: System repository is not setup properly!",
-              "ERROR: User repository is not setup properly!",]
-    if path.isdir(path.join(data_dir_sys,'data')):
-        repo_sys  = app_envdata(data_dir_sys,isSys=True)
+    if path.isdir(path.join(repo_dir_sys,'data')):
+        repo_sys  = app_envdata(repo_dir_sys,isSys=True)
     else: repo_sys = None
-    if path.isdir(path.join(data_dir_user,'data')):
-        repo_user = app_envdata(data_dir_user)
+    if path.isdir(path.join(repo_dir_user,'data')):
+        repo_user = app_envdata(repo_dir_user)
     else: repo_user = None
     if args[0] != "init" and not repo_sys and not repo_user:
         print errmsg[0]
@@ -267,9 +290,9 @@ def cmd_process(args):
             print "  -s   ---  system-wide initial"
             print "  -u   ---  user-wide initial"
         elif args[1]=="-s": # system-wide init
-            app_envdata(data_dir_sys).init_datadir()
+            app_envdata(repo_dir_sys,isSys=True).init_datadir()
         else:  # user-wide init
-            app_envdata(data_dir_user).init_datadir()
+            app_envdata(repo_dir_user).init_datadir()
 
     # register/reg
     elif args[0]=="register" or args[0]=="reg":
@@ -326,9 +349,9 @@ def cmd_process(args):
             if arglen>3 and args[2]=="-s": # system-wide
                 isSys = True
                 ver = args[3]
-                env_dir = path.join(data_dir_sys,"env")
+                env_dir = path.join(repo_dir_sys,"env")
             else: # User-wide
-                env_dir = path.join(data_dir_user,"env")
+                env_dir = path.join(repo_dir_user,"env")
                 ver = args[2]
             if isSys:
                 if not repo_sys or repo_sys._isOK:
@@ -354,16 +377,18 @@ def cmd_process(args):
                     return
                 isSys = True
                 repo = repo_sys
-                env_dir = path.join(data_dir_sys,"env")
+                env_dir = path.join(repo_dir_sys,"env")
             else: # User-wide
                 if repo_sys and repo_sys._isOK: repo = repo_sys
                 elif repo_user and repo_user._isOK: repo = repo_user
-                env_dir = path.join(data_dir_user,"env")
+                env_dir = path.join(repo_dir_user,"env")
             asel = app_envsel(name=args[1],repo=repo,edir=env_dir)
             asel.unset()
 
     # Display help
-    else: print __doc__
+    else:
+        print "Unknown command:", args[0]
+        print __doc__
 
 if __name__=='__main__':
     import sys
