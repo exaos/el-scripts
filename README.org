@@ -34,6 +34,25 @@
     - check both system- and user-wide data directory
     - check both system- and user-wide setting for one app
     - command processing
+    - Structure
+      1. app_envdata --- Class to handle the environment repository
+	 1) set_datadir
+	 2) init_datadir
+	 3) check_apprc
+	 4) check_datadir
+	 5) check_sh_rc
+	 6) check_envsel
+	 7) remove
+	 8) register
+	 9) list_all
+      2. app_envsel  --- Class to handle one application
+	 1) check_envsel
+	 2) remove
+	 3) register
+	 4) list
+	 5) set
+	 6) unset
+      3. cmd_process --- Command parser and processor
   + Data structure
     - Versions startup script is stored in data dir as <app>_<ver>.sh
     - System- or user-wide selection is write to file <env-path>/<app>
@@ -43,5 +62,6 @@
     - First check user's versions then system's
 
 * Changelog
+  + 2010-01-12: Finish all features planned first
   + 2010-01-07: Initialized project
 

@@ -1,7 +1,6 @@
 #!/bin/bash
 # Copyright (c) 2010 Exaos Lee <Exaos.Lee(at)gmail.com>, CNDL
 #
-# System-wide app_rc.sh for app-envsel
 # Purpose: To provide the startup environment for app-envsel
 
 AE_DATA_SYS=/var/lib/app-envsel/data
@@ -18,7 +17,7 @@ set_env()
     if [ -z "$appv" ] && [ -f ${AE_SETD_SYS}/$appn ]; then
 	appv=$(sed /\#/d ${AE_SETD_SYS}/$appn | sed -n 1p)
     fi
-    echo -n "Setting $appn:${appv} -- "
+    echo -n "Setting $appn: "
     if [ -f ${AE_DATA_USER}/${appn}_${appv}.sh ]; then
 	echo -n "${AE_DATA_USER}/${appn}_$appv.sh .. "
 	. ${AE_DATA_USER}/${appn}_${appv}.sh
@@ -41,7 +40,7 @@ else
 
     app_list=(`echo ${app_env_user} ${app_env_sys} | tr " " "\n" | sort -u `)
     if [ ${#app_list} -gt 0 ]; then
-	for app in ${app_list} ; do set_env $app; done
+	for app in ${app_list[@]} ; do set_env $app; done
 	unset app
     fi
     unset app_list
