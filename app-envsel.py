@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-'''
+'''app-envsel: version manager for applications
+Version: 0.1-20100112
+
 Usage: app-envsel <command> [app] [options]
 
 Commands:
