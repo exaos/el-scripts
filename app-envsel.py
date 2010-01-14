@@ -242,12 +242,15 @@ class app_envsel:
 
     def set(self,ver):
         if ver in self._elist[1]:
+            if not path.isdir(self._dir):
+                print "Creating user selection directory",self._dir
+                os.makedirs(self._dir)
             open(self._fsel,'w').write("%s\n"%(ver))
         else:
             print "Version %s is not in repository"%(ver)
     def unset(self,ver=""):
         self.check_envsel()
-        if self._vset == ver or ver == "":
+        if self._vset == ver or ver == "" and path.isfile(self._fsel):
             print "Removing %s ..."%(self._fsel)
             os.remove(self._fsel)
 
@@ -361,8 +364,11 @@ def cmd_process(args):
             else:
                 if repo_sys and repo_sys._isOK: repo=repo_sys
                 elif repo_user and repo_user._isOK: repo=repo_user
-            asel = app_envsel(name=args[1],repo=repo,edir=env_dir)
-            asel.set(ver)
+            try:
+                asel = app_envsel(name=args[1],repo=repo,edir=env_dir)
+                asel.set(ver)
+            except:
+                print "Failed to set %s:%s!"%(args[1],ver)
 
     # unset
     elif args[0]=="unset":
@@ -382,8 +388,11 @@ def cmd_process(args):
                 if repo_sys and repo_sys._isOK: repo = repo_sys
                 elif repo_user and repo_user._isOK: repo = repo_user
                 env_dir = path.join(repo_dir_user,"env")
-            asel = app_envsel(name=args[1],repo=repo,edir=env_dir)
-            asel.unset()
+            try:
+                asel = app_envsel(name=args[1],repo=repo,edir=env_dir)
+                asel.unset()
+            except:
+                print "Failed to unset %s current version!"%(args[1])
 
     # Display help
     else:
