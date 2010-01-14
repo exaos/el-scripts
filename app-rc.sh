@@ -17,23 +17,23 @@ set_env()
     if [ -z "$appv" ] && [ -f ${AE_SETD_SYS}/$appn ]; then
 	appv=$(sed /\#/d ${AE_SETD_SYS}/$appn | sed -n 1p)
     fi
-    echo -n "Setting $appn: "
+    [ $TERM != "dumb" ] && echo -n "Setting $appn: "
     if [ -f ${AE_DATA_USER}/${appn}_${appv}.sh ]; then
-	echo -n "${AE_DATA_USER}/${appn}_$appv.sh .. "
+	[ $TERM != "dumb" ] && echo -n "${AE_DATA_USER}/${appn}_$appv.sh .. "
 	. ${AE_DATA_USER}/${appn}_${appv}.sh
-	echo "[DONE]"
+	[ $TERM != "dumb" ] && echo "[DONE]"
     elif [ -f ${AE_DATA_SYS}/${appn}_${appv}.sh ]; then
-	echo -n "${AE_DATA_SYS}/${appn}_$appv.sh .. "
+	[ $TERM != "dumb" ] && echo -n "${AE_DATA_SYS}/${appn}_$appv.sh .. "
 	. ${AE_DATA_SYS}/${appn}_${appv}.sh
-	echo "DONE!"
+	[ $TERM != "dumb" ] && echo "DONE!"
     else
-	echo "[FAILED]"
+	[ $TERM != "dumb" ] && echo "[FAILED]"
     fi
     unset appn appv
 }
 
 if [ ! -d ${AE_DATA_SYS} -a ! -d ${AE_DATA_USER} ]; then
-    echo "WARNING: Data directory is not ready for \"app-envsel\"!"
+    [ $TERM != "dumb" ] && echo "WARNING: Data directory is not ready for \"app-envsel\"!"
 else
     [ -d ${AE_SETD_SYS} ]  && app_env_sys=$(ls -A ${AE_SETD_SYS})
     [ -d ${AE_SETD_USER} ] && app_env_user=$(ls -A ${AE_SETD_USER})

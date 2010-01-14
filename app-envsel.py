@@ -23,8 +23,8 @@ Author: Exaos Lee <Exaos.Lee(at)gmail.com>, Jan. 2010
 '''
 import os, sys
 import os.path as path
-from base64   import b64decode
-from zlib     import decompress
+from base64 import b64decode
+from zlib   import decompress
 
 # Check the data path
 data_dir_sysd = "/var/lib/app-envsel"
@@ -32,17 +32,18 @@ data_dir_user = path.join(os.environ['HOME'],'.config/app-envsel')
 
 # app-rc.sh
 app_rc_enc='''
-eJyVVGFv2jAQ/Vz/iiOgikhLAvtIx7SoybZKjE6FaZoA0UAMWAp2ZJtojOW/zzYhZJRMa5AS
-53j37vnuOc2GtyDUW0Rig5pwz9I9J+uNhPbShredbgfCnxETMMAY3pmlq5btSNrrbUQSd8m2
-79/A/TAYoKbK/7rjKRO4B2MGKWcZiTHIDQYhIy53KWCaEc7oFlMJK8YhSlNHxQROEPLDeeCP
-/fnox6jvZRH3ErLwzgAvjmSkQaNwHNSC1KMk+jYKn/qtz49fQk/ppCuyrqX7N1STIoHlXC3a
-NjogUJf6n/ZbXbMmK5iAs4LWoUqYey0Ngtmd7gFFN+ot67faAsfgTZteXIP/DRrhUOimtqFf
-kUqVX2BpWGbBDG5vL+uqvrymbAVeVxUvN0yHrRGWktA1GHgPrJc7L7uuOA8alc/NM8tdsTnr
-KRlrk3SOTnFdVebG/Q/2gtWaBI/DcHbUhpOX6o4bfp24v3PqtdVwn6RpZY2TMoFLxR/9h0EY
-FJqLpu+ospuxmL5lKEfI7KUBTnxREZzoMmyaVG6pHKL13X8aPgw/9SBQ3oeYcLyUjO+BCKBM
-AsdRvDfHcmqd3T+1lGgjWBNNykqlf5QPtRFVhj4fc7EXymyJAMe/ANrXGAqtVYadwPwKhUHa
-6HT45gkRst9+Nlsz3S6T88q7kpMrb0sOlv5NqaWdzrgEZwfP9tnErUPzxKp6upbQOZui+FQB
-oQWzRk0+zHK4g5hB8WkwJ0MHqBpuOcGrYzUESEXRMVRMDiqDheo0z7BTN6HaFoT+ACSbwKs=
+eJytVF1v2jAUfa5/xSVEFZGWBPZIxzRUsq0SpRMwTRMgGogBS8GObBONsfz32SZARknZpIF
+EnMvxOT73w9WKPyPUn4Vihapwz5ItJ8uVhNrcgbf1Rh2CHyET0MUY3pmlp5a1UDrLdUhib8
+7W79/Afa/TRVW1/8uGJ0zgJgwZJJylJMIgVxiEDLncJIBpSjija0wlLBiHMElcFRM4RqgdT
+DvtYXs6+D5o+WnI/ZjM/BPAj0IZatAgGHZKQepxJPo6CPot+/PTY+Crc9IFWZbSvQ7VpEhg
+OVWLmoN2CNRH/U9bdsOsyQJG4C7A3hUJM9/WIJjc6RxQdKPe0pZdEzgCf1z1oxL8L9AIl0I
+jcQz9ghRUfoKlYakFE7i9PddVefkX2QK8THUE9jDoP0KlBVa0Wc9yXTxfMY22BlhKQpdgWJ
+pgvUzIsRhKaqdR2dQ808wTq9MxrwmVcmkqzeR5Sv3G+wvR18WsUeepF0z2TnD80ss+a//Fy
+p9U5U5KJK8Y0T4qBx8CX7P9sf3QDTq58bz8G6oa3zS7/klRhpBJSAXc6Ox84IbnYVOAY16u
+tZP1rd3vPfQ+NaGjhhMiwvFcMr4FIoAyCRyH0dbcG2PrNJ5jS1k09vb87nmDKwUtoXboAZ6
+KrVDTEAtw22dA5xJDbqHIsBGYX6AwSAcdbodpTIRs1Z6NNVOy4+as8K6Ok6nhkxws/R1TS4
+8i4xLcDTw7p3Gyd9UDq0r1UkL91HD5XQqE5swaNfowyeAOIgb53WVmVAeoaoVjYS9W2xAgF
+UX7UF5QKNQbikU+wQ7ZhGJaEPoN89bmkQ==
 '''
 
 class app_envdata:
