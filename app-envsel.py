@@ -105,9 +105,7 @@ class app_envdata:
         f_rc_a = self._app_rc + '.sh'
         rc_sappend = '[ -f %s ] && . %s'%(f_rc_a, f_rc_a)
         rc_script = [ l.strip() for l in open(f_rc_u).readlines() ]
-        if rc_sappend in rc_script:
-            print "Env code has already been added to", f_rc_u
-        else:
+        if rc_sappend not in rc_script:
             print "Writing env code to %s ..."%(f_rc_u)
             open(f_rc_u,'a+').write("\n%s\n"%(rc_sappend))
 
@@ -247,6 +245,7 @@ class app_envsel:
                 print "Creating user selection directory",self._dir
                 os.makedirs(self._dir)
             open(self._fsel,'w').write("%s\n"%(ver))
+            self._repo.check_sh_rc()
         else:
             print "Version %s is not in repository"%(ver)
     def unset(self,ver=""):
