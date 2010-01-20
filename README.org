@@ -1,5 +1,17 @@
 #-*- mode: org; -*-
-#+TITLE: README about "app-envsel"
+#+TITLE: ``app-envsel'' -- multi-version handler for applications
+#+AUTHOR: Exaos Lee <Exaos.Lee(at)gmail.com> (PGP: 57D75560)
+#+OPTIONS: H:2 num:nil toc:nil ^:t d:t
+
+* Introduction
+** Purpose
+   To organize multi-versions of one application and let user easily select
+   their preferred one. It's intended to run on some unix-like systems with many
+   applications and users, such as a Linux cluster.
+** License: GPLv3
+** Links
+   1. Git repository: http://github.com/exaos/app-envsel
+   2. Author's ID: http://exaos.myopenid.com/
 
 * How to use app-envsel
 
@@ -22,6 +34,7 @@
 ** User commands
    + List application's versions
      - command: app-envsel list/ls [opt] [<app>]
+     - options: -s --- short list
    + Set version for <app>
      - command: app-envsel set [opt] <app> <ver>
      - options: -s --- system-wide
@@ -29,39 +42,42 @@
      - command: app-envsel unset [opt] [<app>]
      - options: -s --- system-wide
 
+----------------------------------------------------------------------
 * Code information
   + app-envsel.py
     - check both system- and user-wide data directory
     - check both system- and user-wide setting for one app
     - command processing
     - Structure
-      1. app_envdata --- Class to handle the environment repository
-	 1) set_datadir
-	 2) init_datadir
-	 3) check_apprc
-	 4) check_datadir
-	 5) check_sh_rc
-	 6) check_envsel
-	 7) remove
-	 8) register
-	 9) list_all
-      2. app_envsel  --- Class to handle one application
-	 1) check_envsel
-	 2) remove
-	 3) register
-	 4) list
-	 5) set
-	 6) unset
-      3. cmd_process --- Command parser and processor
+      * =app_envdata= --- Class to handle the environment repository
+	+ =set_datadir=
+	+ =init_datadir=
+	+ =check_apprc=
+	+ =check_datadir=
+	+ =check_sh_rc=
+	+ =check_envsel=
+	+ =remove=
+	+ =register=
+	+ =list_all=
+      * =app_envsel=  --- Class to handle one application
+	+ =check_envsel=
+	+ =remove=
+	+ =register=
+	+ =list=
+	+ =set=
+	+ =unset=
+      * =cmd_process= --- Command parser and processor
   + Data structure
-    - Versions startup script is stored in data dir as <app>_<ver>.sh
-    - System- or user-wide selection is write to file <env-path>/<app>
+    - Versions startup script is stored in data dir as =<app>_<ver>.sh=
+    - System- or user-wide selection is write to file =<env-path>/<app>=
   + app-rc.sh
     - encoded the zipped content in base64, and added to app-envsel.py
     - First check user's setting then system's
     - First check user's versions then system's
 
 * Changelog
-  + 2010-01-12: Finish all features planned first
-  + 2010-01-07: Initialized project
+  + 2010-01-12: Finish all features planned first, only bash supported.
+  + 2010-01-07: Initialized project.
+
+----------------------------------------------------------------------
 

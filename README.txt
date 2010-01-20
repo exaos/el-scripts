@@ -1,24 +1,32 @@
-                           README about "app-envsel"
-                           =========================
+            ``app-envsel'' -- multi-version handler for applications
+            ========================================================
 
-Author: Exaos Lee <Exaos.Lee@gmail.com>
-Date: 2010-01-12 17:56:23 CST
-
-
-Table of Contents
-=================
-1 How to use app-envsel 
-    1.1 Install and setup 
-    1.2 User commands 
-2 Code information 
-3 Changelog 
+Author: Exaos Lee (PGP: 57D75560) <Exaos.Lee@gmail.com>
+Date: 2010-01-20 15:33:04 CST
 
 
-1 How to use app-envsel 
-~~~~~~~~~~~~~~~~~~~~~~~~
+Introduction 
+=============
 
-1.1 Install and setup 
+Purpose 
+--------
+   To organize multi-versions of one application and let user easily select
+   their preferred one. It's intended to run on some unix-like systems with many
+   applications and users, such as a Linux cluster.
+
+License: GPLv3 
+---------------
+
+Links 
+------
+   1. Git repository: [http://github.com/exaos/app-envsel]
+   2. Author's ID: [http://exaos.myopenid.com/]
+
+How to use app-envsel 
 ======================
+
+Install and setup 
+------------------
    + Install
      1. Copy app-envsel.py to the directory in your PATH setting
      2. chmod +x app-envsel.py
@@ -34,8 +42,8 @@ Table of Contents
      - Remove all versions of one application
        * command: app-envsel remove/rm <app> -a
 
-1.2 User commands 
-==================
+User commands 
+--------------
    + List application's versions
      - command: app-envsel list/ls [opt] [<app>]
      - options: -s --- short list
@@ -46,41 +54,45 @@ Table of Contents
      - command: app-envsel unset [opt] [<app>]
      - options: -s --- system-wide
 
-2 Code information 
-~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------------------------
+
+Code information 
+=================
   + app-envsel.py
     - check both system- and user-wide data directory
     - check both system- and user-wide setting for one app
     - command processing
     - Structure
-      1. app_envdata --- Class to handle the environment repository
-         1) set_datadir
-         2) init_datadir
-         3) check_apprc
-         4) check_datadir
-         5) check_sh_rc
-         6) check_envsel
-         7) remove
-         8) register
-         9) list_all
-      2. app_envsel  --- Class to handle one application
-         1) check_envsel
-         2) remove
-         3) register
-         4) list
-         5) set
-         6) unset
-      3. cmd_process --- Command parser and processor
+      * `app_envdata' --- Class to handle the environment repository
+        + `set_datadir'
+        + `init_datadir'
+        + `check_apprc'
+        + `check_datadir'
+        + `check_sh_rc'
+        + `check_envsel'
+        + `remove'
+        + `register'
+        + `list_all'
+      * `app_envsel'  --- Class to handle one application
+        + `check_envsel'
+        + `remove'
+        + `register'
+        + `list'
+        + `set'
+        + `unset'
+      * `cmd_process' --- Command parser and processor
   + Data structure
-    - Versions startup script is stored in data dir as <app>_<ver>.sh
-    - System- or user-wide selection is write to file <env-path>/<app>
+    - Versions startup script is stored in data dir as `<app>_<ver>.sh'
+    - System- or user-wide selection is write to file `<env-path>/<app>'
   + app-rc.sh
     - encoded the zipped content in base64, and added to app-envsel.py
     - First check user's setting then system's
     - First check user's versions then system's
 
-3 Changelog 
-~~~~~~~~~~~~
-  + 2010-01-12: Finish all features planned first
-  + 2010-01-07: Initialized project
+Changelog 
+==========
+  + 2010-01-12: Finish all features planned first, only bash supported.
+  + 2010-01-07: Initialized project.
+
+----------------------------------------------------------------------
 

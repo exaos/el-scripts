@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''app-envsel: version manager for applications
-Version: 0.1-20100112
+'''app-envsel: version manager for applications (Version: 0.1-20100112)
 
 Usage: app-envsel [--sys <path>] <command> [app] [options]
 
@@ -19,8 +18,8 @@ Options:
   NOTE: If system repository is other than the default setting, the option
      "--sys <path>" should be added each time you execute this command.
 
-Author: Exaos Lee <Exaos.Lee(at)gmail.com>, Jan. 2010
-'''
+Author: Exaos Lee <Exaos.Lee(at)gmail.com>;  Copyright: GPLv3'''
+
 import os, sys
 import os.path as path
 from base64 import b64decode
