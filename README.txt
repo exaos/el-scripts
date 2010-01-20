@@ -38,6 +38,7 @@ Table of Contents
 ==================
    + List application's versions
      - command: app-envsel list/ls [opt] [<app>]
+     - options: -s --- short list
    + Set version for <app>
      - command: app-envsel set [opt] <app> <ver>
      - options: -s --- system-wide
