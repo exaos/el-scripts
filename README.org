@@ -14,7 +14,7 @@ computer. Wether or not they are useful, you can help me by commenting them.
   by one. Here comes the scripts.
 
 ** myrepos.py/sh
-   To manage my daily repositories using git. Now, there are two version, python
+   To manage my daily repositories using git. Now, there are two versions, python
    and bash. The python version is a try with python-git. The bash version works
    everyday.
 
@@ -31,5 +31,5 @@ computer. Wether or not they are useful, you can help me by commenting them.
     "git svn clone --stdlayout".
     : Usage: git-fix-svn-tags.py [-f] <path-in-git-svn>
   + ~fix_u8fn.py~ --- Fix Chinese filenames with bad encoding fetched by aMule
-    : Usage: fix_u8fn.py [-f] [file] [path] [file] ...
+    : Usage: fix_u8fn.py [-f] [file] [path] [file] [...]
 
