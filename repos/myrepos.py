@@ -9,11 +9,11 @@ import git
 
 #-----------------------------------------------------------
 myrepos = {
-    'myorg':    'Library/MyOrg',
+    'myorg'   : 'Library/MyOrg',
     'myconfig': 'Library/MyConfig',
-    'mynotes':  'Library/MyNotes',
-    'daily':    'Workspace/exaos/daily',
-    'goagent':  'Workspace/exaos/goagent',
+    'mynotes' : 'Library/MyNotes',
+    'daily'   : 'Workspace/exaos/daily',
+    'goagent' : 'Workspace/exaos/goagent',
     }
 
 #-----------------------------------------------------------
