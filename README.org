@@ -1,0 +1,35 @@
+# -*- mode: org; coding: utf-8
+#+TITLE: Miscellaneous Scripts by Exaos Lee
+#+AUTHOR: Exaos Lee
+
+Scripts listed here are a collection of Exaos' daily life playing with
+computer. Wether or not they are useful, you can help me by commenting them.
+
+* app-envsel -- handle multi-versions of applications
+  A python script to choose and setup user's environment while many versions of
+  one application exists in your system. It depends on bash and python.
+
+* repos
+  I have many repositories, most of them in git. It's a burden to check them one
+  by one. Here comes the scripts.
+
+** myrepos.py/sh
+   To manage my daily repositories using git. Now, there are two version, python
+   and bash. The python version is a try with python-git. The bash version works
+   everyday.
+
+** repos-up.py/lua
+   To manage many monitored repositories in a directory through a config file
+   ~repos.yaml~. Two versions, python and lua, exists.
+
+** repos.py
+   A try to merge functions in ~myrepos~ and ~repos-up~. The config ~repos.yaml~
+   is not the same with ~repos-up.py~.
+
+* misc
+  + ~git-fix-svn-tags.py~ --- change remote tags to local ones after command
+    "git svn clone --stdlayout".
+    : Usage: git-fix-svn-tags.py [-f] <path-in-git-svn>
+  + ~fix_u8fn.py~ --- Fix Chinese filenames with bad encoding fetched by aMule
+    : Usage: fix_u8fn.py [-f] [file] [path] [file] ...
+
