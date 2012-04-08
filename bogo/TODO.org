@@ -1,0 +1,12 @@
+#+TITLE: TODOs for Bogo
+#+AUTHOR: Exaos Lee <Exaos.Lee(at)gmail.com>
+
+* TODO define the directory structure for a utility root directory
+* TODO define the configuration file format: YAML in use
+* TODO prototype programming in Python (Bogo)
+* TODO try a scientific utility root directory using Bogo
+* TODO user environment handle: (*nix, Windows, ...)
+* TODO design a logo
+* TODO design the GUI (bogo-gui)
+* TODO publish the prototype code on github
+

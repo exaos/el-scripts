@@ -1,0 +1,27 @@
+[
+    { "System": [
+	{ "Links": [
+	    "Environment",
+	    "Executables",
+	    "Headers",
+	    { "Libraries": ["python2.5","python2.6","ruby"] },
+	    { "Manuals": ["man0", "man1", "man2", "man3", "man4", "man5",
+			 "man6", "man7", "man8"] },
+	    "Shared",
+	    "Tasks"]
+	},
+	{ "Settings": ["completion", "Scripts", "zsh"] },
+	{ "Variable": [
+	    { "lib":[ { "xdg": [ "applications",
+				 {"mime": [ "application" ] } ] } ]
+	    },
+	    "tmp"]
+	} ]
+    },
+    "Programs",
+    "Documentation",
+    "Files",
+    "Depot",
+    ".Settings"
+]
+

@@ -1,0 +1,27 @@
+# Alternative file trees to replace legacies
+- System: # contain system stuff
+  - Links: # links to serve globally
+    - Environment
+    - Executables # legacy "bin"
+    - Headers     # legacy "include"
+    - Libraries:  # legacy "lib"
+      - [ python2.5, python2.6, ruby ]
+    - Manuals:    # legacy "man"
+      - [ man0, man1, man2, man3, man4, man5,
+      man6, man7, man8 ]
+    - Shared      # legacy "share"
+    - Tasks
+    - Settings:   # legacy "etc"
+      - [ completion, Scripts, zsh ]
+    - Variable:   # legacy "var"
+      - lib:
+        - xdg:
+          - mime: [ application, ]
+          - tmp # --> /tmp
+- Programs  # NEW: one program on directory
+- Documentation # == "share/doc"
+- Files:  # == "share"
+  - Icons # == "share/icons"
+  - Fonts # == "share/fonts"
+- Depot
+- .Settings

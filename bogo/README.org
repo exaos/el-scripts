@@ -1,0 +1,21 @@
+#+TITLE: BOGO -- a package manager like the GoboLinux
+#+AUTHOR: Exaos Lee <Exaos.Lee(at)gmail.com>
+
+* Features
+  1. All programs are managed by YAML files.
+     1) depency
+     2) resources
+     3) update
+  2. One program one directory, one version one directory.
+  3. Copy as installation, directory delete as uninstallation.
+
+* Directories
+#+BEGIN_EXAMPLE
+  ./
+  |-- sci/
+  |   |-- files/
+  |   `-- recipes/
+  `-- tools/
+      |-- bogo/
+      `-- bogo-gui/
+#+END_EXAMPLE
