@@ -8,11 +8,10 @@ fi
 
 #### Repositories monitered
 repos=(
-    $HOME/Library/MyOrg
-    $HOME/Library/MyConfig
-    $HOME/Library/MyNotes
+    $HOME/Workspace/exaos/myconfig
+    $HOME/Workspace/exaos/mynotes
     $HOME/Workspace/exaos/daily
-    $HOME/Workspace/exaos/goagent
+    $HOME/Workspace/exaos/utils/goagent
 )
 
 sync_repo () {
