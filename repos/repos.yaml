@@ -1,149 +1,77 @@
 # mode: yaml; coding: utf-8
 
-# My repositories information, by Exaos Lee
 ####################################################################
-
-####################################################################
-# Common commands for VCS tools
-
-# 约定：
-# 1. 如果 <repo>:type 未赋值，默认使用 git
-# 2. 如果 <repo>:path 为空，则是值为 <repo> 的子目录
-#    如果 <repo> 只属于某个 group, 则该目录在此 group 定义的路径下
-#    如果 <repo> 属于多个组，则在第一个组定义的目录下
-#    否则在全局的 <workspace> 下
-# 3. 关键字说明
-#    a. desc -- 描述， description
-#    b. path -- 路径
-#    c. cmds -- 命令列表， commands
-#    d. type -- 类型
-#       1). group -- 群组
-#       2). git|hg|bzr|svn|git_svn -- VCS 工具类型
-
-global:
-  default:   # default = git
-  workspace: # default = ~/Workspace
-  git:
-    cmds:
-      - pull origin
-      - gc --aggressive --prune=now
-  git_svn:
-    cmds:
-      - svn fetch
-      - svn rebase -l
-      - gc --aggressive
-  hg:
-    cmds:
-      - pull
-      - merge
-  bzr:
-    cmds:
-      - pull
-  svn:
-    cmds:
-      - update
-
-# 每个仓库的定义格式为： ----
-#  <key>:
-#    path: <仓库的工作路径>
-#    type: git | git_svn | hg | bzr | svn
-#    groups: [, ]
-#    cmds:
-#      - <cmd 1>
-#      - <cmd 2>
-#    upstreams:
-#      lpath:  <local reference repository>
-#      <up-repos>:
-#        url: <upstream URL>
-#        branches: [upstream branches list]
-
-# 保留名称不可用于 repos 或 group 的名称
-# a. global -- 全局
-# b. orphan -- 独立的 repo, 不属于任何组
-# c. default
-# d. workspace
-# e. VCS 工具名称
-
-####################################################################
-## Exaos personal repositories
-
-# The group
 exaos:
-  type:  group
-  repos:
+  desc: Exaos personal repositories
+  type: group
+  units:
     - daily
-    - myorg
     - myconfig
     - mynotes
+    - exaos-misc
+    - exaos-utils
 
 daily:
-  path: ~/Workspace/exaos/daily
   desc: 心蛛的日常工作内容
   upstreams:
-    lpath: ~/Repos/daily.git
+    local:
+      - ~/Repos/daily.git
     bitbucket:
       url: ssh://git@bitbucket.org/exaos/el-daily.git
-  cmds:
-    - fetch bitbucket
-    - push  bitbucket
-
-myorg:
-  path: ~/Library/MyOrg
-  desc: My GTD life based org-mode
-  upstreams:
-    lpath: ~/Repos/myorg.git
-    bitbucket:
-      url: ssh://git@bitbucket.org/exaos/el-org.git
-  cmds:
-    - fetch bitbucket
-    - push  bitbucket
+      cmds: [ fetch, pull, push ]
 
 myconfig:
-  path: ~/Library/MyConfig
   desc: My various configurations
   upstreams:
-    lpath: ~/Repos/myconfig.git
+    local:
+      - ~/Repos/myconfig.git
     bitbucket:
       url: ssh://git@bitbucket.org/exaos/el-cfg.git
-  cmds:
-    - fetch bitbucket
-    - push  bitbucket
 
 mynotes:
-  path: ~/Library/MyNotes
   desc: Personal notes
   upstreams:
-    lpath: ~/Repos/mynotes.git
+    local:
+      - ~/Repos/mynotes.git
 
-# Exaos-misc
 exaos-misc:
-  type:  group
-  repos:
-    - goagent
-    - mysite-src
+  desc: Exaos miscellaneous stuff
+  type: group
+  path: misc
+  units:
     - mysite
-    - o-blog
+    - mysite-src
+    - site-cjpl
     - site-o-blog
+    - daq4cjpl
 
 mysite:
-  path: ~/Workspace/exaos/site
+  path: site
   desc: 个人站点
 
 mysite-src:
-  path: ~/Workspace/exaos/site/org-src
+  path: site/org-src
   desc: 用于生成个人站点的源文件
 
+site-o-blog:
+  desc: Demo Chinese blog based on o-blog
+
+exaos-utils:
+  desc: Exaos Utilities
+  type: group
+  path: utils
+  units:
+    - goagent
+    - o-blog
+
 goagent:
-  path: ~/Workspace/exaos/goagent
   desc: GoAgent, codes and config
   upstreams:
-    #github:
     origin:
       url: git://github.com/phus/goagent.git
       branches: master
 
 o-blog:
-  path: ~/Workspace/exaos/o-blog
   desc: Standalone blog system based on org-mode, with Chinese templates
   upstreams:
     bitbucket:
@@ -156,15 +84,11 @@ o-blog:
       url: git://github.com/renard/o-blog.git
       branches: [ master, ]
 
-site-o-blog:
-  path: ~/Workspace/exaos/site-o-blog
-  desc: Demo Chinese blog based on o-blog
-
 ####################################################################
-## DAQ repositories
 daq:
+  desc: DAQ repositories
   type: group
-  repos:
+  units:
     - midas
     - mxml
     - lumidas
@@ -178,7 +102,7 @@ daq:
 # Lua
 lang-Lua:
   type: group
-  repos:
+  units:
     - LuaD
     - LuaDist
     - luajit-2.0
@@ -188,7 +112,7 @@ lang-Lua:
 # Python
 lang-Python:
   type: group
-  repos:
+  units:
     - cpython
     - pypy
     - pyd
@@ -198,14 +122,14 @@ lang-Python:
 # Julia
 lang-Julia:
   type: group
-  repos:
+  units:
     - julia
     - julialang.github.com
 
 # Tools: Git
 Git:
   type: group
-  repos:
+  units:
     - git
     - gitignore
 

@@ -18,7 +18,7 @@ Options:
 Commands:
 
   ls | list    -- show objects specified or all if no one given
-  st | status  -- show repository status
+  st | status  -- show repository status (default if no defined commands)
   info         -- show repository information
   fetch        -- fetch remotes
   pull         -- fetch and update changes from upstreams
@@ -41,6 +41,10 @@ Object:
 import os,sys
 import yaml
 import subprocess as sp
+
+if sys.version < "2.7":
+    printf("Error: only support python >= 2.7")
+    exit(1)
 
 #-----------------------------------------------------------
 # command line options
@@ -81,7 +85,7 @@ def cli_options(argv):
 
 #-----------------------------------------------------------
 # parsing configure file
-cfg_groups = { "orphan":{ "type": "group", "repos": []} }
+cfg_groups = { "orphan":{ 'id': 'orphan', "type": "group", "repos": []}, }
 cfg_repos  = {}
 cfg_global = {}
 
@@ -120,7 +124,58 @@ def config_read():
 
     return 0
 
+def which(program):
+    '''Return program's absolute path.'''
+    is_exe = lambda f: os.path.exists(f) and os.access(f,os.X_OK)
+    fp, fn = os.path.split(program)
+    if fp and is_exe(program): return program
+    f_list = filter(is_exe,
+                    [ os.path.join(p,fn) for p in
+                      os.environ["PATH"].split(os.pathsep) ])
+    if f_list: return f_list[0]
+    return None
+
+def assign_dict_default(ddst, dsrc):
+    '''assign default values to dict'''
+    if type(ddst) != dict or type(dsrc) != dict: return
+    for k in list(dsrc):
+        if k not in ddst: ddst[k] = dsrc[k]
+        else:
+            if type(ddst[k]) == dict:
+                if type(dsrc[k]) == dict: assign_dict_default(ddst[k], dsrc[k])
+            else:
+                if not ddst[k]: ddst[k] = dsrc[k]
+
+def config_fill_global():
+    global cfg_global
+    assign_dict_default( cfg_global,
+                         { 'vcs': 'git', 'path': os.path.join(os.environ['HOME'],'Workspace'),
+                           'git-svn': { 'path': which('git'),
+                                        'cmds': [ "svn fetch", "svn rebase -l", "gc --aggressive" ] },
+                           'git': { 'path': which('git'),
+                                    'cmds': [ "fetch --all", "pull origin", "gc --aggressive" ] },
+                           'hg':  { 'path': which('hg'),
+                                    'cmds': [ "pull", "merge" ] },
+                           'bzr': { 'path': which('bzr'),
+                                    'cmds': [ "pull", ] },
+                           'svn': { 'path': which('svn'),
+                                    'cmds': [ "update", ] },
+                           'id': 'global' } )
+
+def config_fill_group(g): pass
+
+def config_fill_repo(r):
+    # path
+    if "path" not in r or not r["path"]: pass
+    # type
+    # groups
+    # commands
+    # upstreams
+
 def config_fill():
+    # global
+    # groups
+    # repos
     pass
 
 def print_test():

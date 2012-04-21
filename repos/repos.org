@@ -1,0 +1,147 @@
+# -*- mode: org; coding: utf-8
+#+TITLE: repos 使用说明
+
+默认配置： =./repos.yaml=, =~/Workspace/repos.yaml= or =~/.config/repos.yaml=
+
+默认操作： =defined=, =status= (当没有 =defined= 时)
+
+* 配置文件的结构
+
+文件包含基本单元如下：
+#+begin_example
+global:
+<key>:
+#+end_example
+示例参见 file:repos.yaml
+
+1. =global= 代表全局属性，省略采用默认值
+2. =<key>= 是组 (group) 或者仓库 (repo) 的定义，可以是 0 或多个
+3. 属性分显式及隐式两种
+   - 隐式属性：由程序自动生成，不可指定，仅用于程序中
+   - 显式属性：可指定，如未指定，则使用默认值
+4. =<key>= 共有的属性:
+   - =desc= :: 描述, =description=
+   - =path= :: 路径, 默认等于 =<key>=
+   - =vcs= :: 指定的 VCS 工具，默认为 =global= 中的值
+   - =cmds= :: 指定的命令序列，默认为 =global= 中的值
+   - =parent= :: 主组，默认为所找到的一个父组或 =orphan=
+   - 隐式属性 =parents= :: 表示 =<key>= 的归属，可以是多个组，默认为空
+   - 隐式属性 =id= :: 等于 =<key>=
+5. 保留关键定：不可用于 repo 或 group 的名称
+   - global -- 全局
+   - orphan -- 组名，存储独立的 repo
+   - default, path, type, vcs, id, units, parents
+   - VCS 工具名称 -- git, git-svn, hg, bzr, svn, cvs
+
+* 全局属性
+
+- desc :: 说明，省略则为空
+- path :: 工具路径，默认为 =~/Workspace=
+- vcs :: 默认的版本控制工具，取值为后面的 VCS 工具之一，省略则为 =git=
+- <vcs-key> :: 名称为 =<vcs-key>= 的版本控制工具，默认包含有的 =git=, =git-svn=,
+               =hg=, =bzr=, =svn=, =cvs=
+  - path :: 默认为系统中找到的 =<vcs-key>= 指定的程序路径
+  - cmds :: 使用 =<vcs-key>:path= 命令要依次执行的参数序列
+
+缺省值如下：
+#+begin_example
+global:
+  vcs:  git
+  path: ~/Workspace
+  git-svn:
+    path: <which git>
+    cmds:
+      - svn fetch
+      - svn rebase -l
+      - gc --aggressive
+  git:
+    path: <which git>
+    cmds:
+      - pull origin
+      - gc --aggressive --prune=now
+  hg:
+    path: <which hg>
+    cmds:
+      - pull
+      - merge
+  bzr:
+    path: <which bzr>
+    cmds:
+      - pull
+  svn:
+    path: <which svn>
+    cmds:
+      - update
+  cvs:
+    path: <which cvs>
+    cmds:
+      - <null>
+#+end_example
+
+* 组
+
+组的属性有：
+- type :: 值必须为 =group=, 必须指明此属性
+- desc :: 组的说明
+- path :: 组默认路径，如为相对路径，则为主组路径下的子目录
+- vcs :: 组内默认的 VCS 工具，值的列表由 =global= 提供
+- cmds :: 为组内默认 VCS 所预定义的命令序列
+- parent :: 所归属的主组，缺省为所找到的第一个父组或 =orphan=
+- units :: 所包含的子组或仓库
+
+例如：
+#+begin_example
+daq-bots:
+  type: group
+  desc: Data acquisition repos
+  vcs: git
+  cmds:
+    - pull origin
+    - commit -m "auto commit by repos.py"
+    - push origin
+  parents:
+    - daq
+  units:
+    - midas
+    - mxml
+    - rome
+#+end_example
+
+组与组之间可以通过 =parent= 构成树状结构。 *特别注意*: 不要形成组之间的循环归属！
+
+* 仓库
+
+每个仓库的属性有：
+- type :: 值必须为 =repo=, 一般省略
+- desc :: 仓库的说明
+- path :: 组默认路径，如为相对路径，则为主组路径下的子目录
+- vcs :: 所使用的 VCS 工具，值的列表由 =global= 提供
+- cmds :: 为 VCS 预定义的命令序列
+- parent :: 所归属的主组，缺省为所找到的第一个父组或 =orphan=
+- upstreams :: 上游仓库列表
+  - local :: 本地的上游仓库路径列表
+  - <remote-id> :: 远程的仓库标识 =id=
+    - url :: 仓库 URL
+    - branches :: 远程分支列表
+
+示例：
+#+begin_example
+o-blog:
+  desc: Standalone blog system based on org-mode, with Chinese templates
+  upstreams:
+    local:
+      - ~/Repos/o-blog.git
+    bitbucket:
+      url: ssh://git@bitbucket.org/exaos/o-blog.git
+      branches: [ renard, zh-example ]
+    github:
+      url: git@github.com:exaos/o-blog.git
+      branches:
+        - zh-example
+        - renard
+    renard:
+      url: git://github.com/renard/o-blog.git
+      branches:
+        - master
+#+end_example
+
