@@ -75,28 +75,43 @@ msg_ret = {
     }
 
 g_fcfg = ""
-g_cmds = []
+g_cmd  = []
 g_objs = []
 g_verb = False
 g_cmds_av = [ "list", "status", "info", "cmds", "sync", "fetch", "pull", "push"]
 
 def cli_options(argv):
-    global g_fcfg, g_cmds, g_objs, g_verb
-    ok_opt = True
-    parser = ArgumentParser()
+    global g_fcfg, g_cmd, g_objs, g_verb
 
-    # help, verbose, version
+    par = ArgumentParser()
+    par = ArgumentParser(prog="repos", description="Manage your repositories using YAML config")
+    par.add_argument("-c", "--config", nargs=1, help="Override the default configure file")
+    par.add_argument('-V', '--verbose', action='store_true')
 
-    # parse commands
+    par_cmd = par.add_argument_group('command')
+    par_cmd.add_argument('cmd', nargs='?', choices=g_cmds_av, default='status')
+    par_cmd.add_argument('obj', nargs='*', default=["-a"], help="default (-a) means all objects")
+
+    print argv
+    pp = par.parse_args(argv)
 
     # find configure file
     dir_home = os.getenv("HOME")
-    f_list = [ "repos.yaml",
+    f_list = [ pp.config[0], "repos.yaml",
                os.path.join(dir_home, "Workspace/repos.yaml"),
                os.path.join(dir_home, ".config/repos.yaml") ]
     fc_tmp = list(filter(os.path.isfile, f_list))
     if not fc_tmp: return -1
     g_fcfg = fc_tmp[0]
+
+    # verbose
+    g_verb = pp.verbose
+
+    # command
+    g_cmd = pp.cmd
+
+    # objs
+    g_objs = ['-a',] if "-a" in pp.obj else pp.obj
 
     return 0
 
@@ -209,7 +224,7 @@ def config_read():
     except: return -2
 
     # global settings
-    cfg_global = cfg_tmp.pop("global")
+    if 'global' in cfg_tmp: cfg_global = cfg_tmp.pop("global")
     ret = cfg_set_default_global()
     if ret < 0: return ret
 
@@ -254,12 +269,11 @@ def print_test():
 #-----------------------------------------------------------
 # Main
 def main(argv):
-    if len(argv) < 2 or cli_options(argv) != 0:
-        print(__doc__ % sys.argv[0])
+    if len(argv) < 2 or cli_options(argv[1:]) != 0:
+        print(__doc__ % argv[0])
         exit(0)
     n_err = config_read()
     if n_err == 0:
-        config_fill()
         print_test()
     else:
         print(g_fcfg)
