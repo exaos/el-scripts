@@ -1,11 +1,37 @@
 # -*- mode: org; coding: utf-8
 #+TITLE: repos 使用说明
 
+* 命令与参数
+
+- 用法 :: =repos [options] <commands> [cmd-options] [object]=
+- 目的 :: 管理定义的源码仓库
+- 全局参数 =[options]=
+  + =-c | --config <filename>= -- 指定配置文件
+  + =-h | --help= -- 显示帮助
+  + =-V | --verbose= -- 显示冗余信息
+  + =-v | --version= -- 显示版本
+- 命令 :: =ls | list=, =st | status=, =info=, =fetch=, =pull=, =push=, =sync=,
+          =de | defined=
+- 对象
+  + =-a | --all= -- 所有在配置文件中定义的仓库
+  + =[id]= -- 指定的 =id= 对象，可以是组或仓库
+
+** 命令
+
+- ls | list    -- show objects specified or all if no one given
+- st | status  -- show repository status (default if no defined commands)
+- info         -- show group or repository information
+- cmds         -- command sequence defined in configure file (default)
+- fetch        -- fetch remotes
+- pull         -- fetch and update changes from upstreams
+- push         -- push changes to upstream branches
+- sync         -- syncronize (pull and push)  with repository defined
+
+默认操作： =cmds=, =status= (当 =cmds= 缺省时)
+
+* 配置文件
+
 默认配置： =./repos.yaml=, =~/Workspace/repos.yaml= or =~/.config/repos.yaml=
-
-默认操作： =defined=, =status= (当没有 =defined= 时)
-
-* 配置文件的结构
 
 文件包含基本单元如下：
 #+begin_example
@@ -24,7 +50,7 @@ global:
    - =path= :: 路径, 默认等于 =<key>=
    - =vcs= :: 指定的 VCS 工具，默认为 =global= 中的值
    - =cmds= :: 指定的命令序列，默认为 =global= 中的值
-   - =parent= :: 主组，默认为所找到的一个父组或 =orphan=
+   - =parent= :: 主组，默认为所找到的一个父组或 =global=
    - 隐式属性 =parents= :: 表示 =<key>= 的归属，可以是多个组，默认为空
    - 隐式属性 =id= :: 等于 =<key>=
 5. 保留关键定：不可用于 repo 或 group 的名称
@@ -33,7 +59,7 @@ global:
    - default, path, type, vcs, id, units, parents
    - VCS 工具名称 -- git, git-svn, hg, bzr, svn, cvs
 
-* 全局属性
+** 全局属性
 
 - desc :: 说明，省略则为空
 - path :: 工具路径，默认为 =~/Workspace=
@@ -78,7 +104,7 @@ global:
       - <null>
 #+end_example
 
-* 组
+** 组
 
 组的属性有：
 - type :: 值必须为 =group=, 必须指明此属性
@@ -109,7 +135,7 @@ daq-bots:
 
 组与组之间可以通过 =parent= 构成树状结构。 *特别注意*: 不要形成组之间的循环归属！
 
-* 仓库
+** 仓库
 
 每个仓库的属性有：
 - type :: 值必须为 =repo=, 一般省略
@@ -117,7 +143,7 @@ daq-bots:
 - path :: 组默认路径，如为相对路径，则为主组路径下的子目录
 - vcs :: 所使用的 VCS 工具，值的列表由 =global= 提供
 - cmds :: 为 VCS 预定义的命令序列
-- parent :: 所归属的主组，缺省为所找到的第一个父组或 =orphan=
+- parent :: 所归属的主组，缺省为所找到的第一个父组或 =global=
 - upstreams :: 上游仓库列表
   - local :: 本地的上游仓库路径列表
   - <remote-id> :: 远程的仓库标识 =id=
@@ -144,4 +170,3 @@ o-blog:
       branches:
         - master
 #+end_example
-
