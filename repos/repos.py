@@ -23,13 +23,16 @@ ID:
   [repo | group] -- repository or group ID
 '''
 
-import os,sys
+import os, sys
 import subprocess as sp
+from pprint import pprint
+
 try:
     from argparse import ArgumentParser
 except:
     printf("Error: you'd better install module argparse or python >= 2.7")
     exit(1)
+
 try:
     import yaml
 except:
@@ -57,7 +60,7 @@ def set_dict_default(ddst, dsrc):
         if k not in ddst: ddst[k] = dsrc[k]
         else:
             if type(ddst[k]) == dict:
-                if type(dsrc[k]) == dict: assign_dict_default(ddst[k], dsrc[k])
+                if type(dsrc[k]) == dict: set_dict_default(ddst[k], dsrc[k])
             else:
                 if not ddst[k]: ddst[k] = dsrc[k]
 
@@ -87,19 +90,17 @@ def cli_options(argv):
     par = ArgumentParser(prog="repos", description="Manage your repositories using YAML config")
     par.add_argument("-c", "--config", nargs=1, help="Override the default configure file")
     par.add_argument('-V', '--verbose', action='store_true')
-
     par_cmd = par.add_argument_group('command')
-    par_cmd.add_argument('cmd', nargs='?', choices=g_cmds_av, default='status')
+    par_cmd.add_argument('cmd', nargs=1, choices=g_cmds_av, default='status')
     par_cmd.add_argument('obj', nargs='*', default=["-a"], help="default (-a) means all objects")
-
-    print argv
     pp = par.parse_args(argv)
 
     # find configure file
     dir_home = os.getenv("HOME")
-    f_list = [ pp.config[0], "repos.yaml",
+    f_list = [ "repos.yaml",
                os.path.join(dir_home, "Workspace/repos.yaml"),
                os.path.join(dir_home, ".config/repos.yaml") ]
+    if pp.config: f_list.insert(0, pp.config[0])
     fc_tmp = list(filter(os.path.isfile, f_list))
     if not fc_tmp: return -1
     g_fcfg = fc_tmp[0]
@@ -107,11 +108,8 @@ def cli_options(argv):
     # verbose
     g_verb = pp.verbose
 
-    # command
-    g_cmd = pp.cmd
-
-    # objs
-    g_objs = ['-a',] if "-a" in pp.obj else pp.obj
+    # command and objs
+    g_cmd, g_objs = pp.cmd[0], pp.obj
 
     return 0
 
@@ -127,7 +125,8 @@ def cfg_set_default_global():
     global cfg_global
     set_dict_default(
         cfg_global,
-        { 'vcs': 'git',
+        { 'type': 'global',
+          'vcs': 'git',
           'path': os.path.join(os.environ['HOME'],'Workspace'),
           'git-svn': { 'path': which('git'),
                        'cmds': ["svn fetch", "svn rebase -l", "gc --aggressive"] },
@@ -140,7 +139,7 @@ def cfg_set_default_global():
           'svn': { 'path': which('svn'),
                    'cmds': [ "update", ] },
           'cvs': { 'path': which('cvs'),
-                   'cmds': [] },
+                   'cmds': [], },
           'id': 'global' } )
     # check availability of VCS tools, remove un-available tools
     av_keys = cg_keys = list(cfg_global.keys())
@@ -156,67 +155,66 @@ def cfg_set_default_global():
 
     return 0
 
-def get_by_id_path(id_d):
+def get_by_id_dic(key):
+    global cfg_global, cfg_groups, cfg_repos
+    if key == 'global': return cfg_global
+    if key in cfg_groups: return cfg_groups[key]
+    elif key in cfg_repos: return cfg_repos[key]
+    else: return None
+
+def get_by_id_path(key):
     global cfg_global, cfg_groups, cfg_repos
 
-    if id_d == 'global': return os.path.abspath(cfg_global['path'])
+    if key == 'global': return os.path.abspath(cfg_global['path'])
 
-    dic_d = cfg_repos[id_d] if id_d in cfg_repos else cfg_groups[id_d]
+    dic = get_by_id_dic(key)
+    if not dic: return None
+
     # abosulte path
-    if "path" in dic_d and os.path.isabs(dic_d['path']): return dic_d['path']
+    if "path" in dic and os.path.isabs(dic['path']): return dic['path']
 
     # relative path
-    ppath = get_by_id_path(dic_d['parent'])
-    if "path" not in dic_d or not dic_d["path"]:
-        return os.path.join(ppath, id_d)
+    pp = get_by_id_path(dic['parent'])
+    if "path" not in dic or not dic["path"]: return os.path.join(pp, key)
 
-    return os.path.join(ppath, dic_d['path'])
+    return os.path.join(pp, dic['path'])
 
-def get_by_id_vcs (id_d):
+def get_by_id_vcs (key):
     global cfg_global, cfg_groups, cfg_repos
-    if id_d == 'global': return cfg_global['vcs']
+    if key == 'global': return cfg_global['vcs']
 
-    dic_d = cfg_repos[id_d] if id_d in cfg_repos else cfg_groups[id_d]
-    if 'vcs' not in dic_d or not dic_d['vcs']:
-        return get_by_id_vcs(dic_d['parent'])
+    dic = get_by_id_dic(key)
+    if 'vcs' not in dic or not dic['vcs']:
+        return get_by_id_vcs(dic['parent'])
 
-    return dic_d['vcs']
+    return dic['vcs']
 
-def get_by_id_cmds(id_d, v):
+def get_by_id_cmds(key, v):
     global cfg_global, cfg_groups, cfg_repos
-    if id_d == 'global': return cfg_global[v]['cmds']
+    if key == 'global': return cfg_global[v]['cmds']
 
-    dic_d = cfg_repos[id_d] if id_d in cfg_repos else cfg_groups[id_d]
-    if 'cmds' not in dic_d or not dic_d['cmds']:
-        return get_by_id_cmds(dic_d['parent'], v)
+    dic = get_by_id_dic(key)
+    if 'cmds' not in dic or not dic['cmds']:
+        return get_by_id_cmds(dic['parent'], v)
 
-    return dic_d['cmds']
+    return dic['cmds']
 
-def cfg_set_default_id(id_d):
+def cfg_set_default_id(key):
     global cfg_groups, cfg_repos
-    if id_d == 'global': return
+    if key == 'global': return
 
-    dic_d = cfg_repos[id_d] if id_d in cfg_repos else cfg_groups[id_d]
-    # parent
-    if 'parent' not in dic_d or not dic_d['parent']:
-        if not dic_d['parents'] or not dic_d['parents']:
-            dic_d['parent'] = 'global'
-        else:
-            dic_d['parent'] = dic_d['parents'][0]
+    dic = get_by_id_dic(key)
     # path
-    dic_d["path"] = get_by_id_path(id_d)
+    dic["path"] = get_by_id_path(key)
     # vcs
-    dic_d['vcs' ] = get_by_id_vcs( id_d)
+    dic['vcs' ] = get_by_id_vcs (key)
     # cmds
-    dic_d['cmds'] = get_by_id_cmds(id_d, dic_d['vcs'])
+    dic['cmds'] = get_by_id_cmds(key, dic['vcs'])
+    # desc
+    if 'desc' not in dic: dic['desc'] = 'Not given'
 
-def cfg_set_defaults_group(gr):
-    cfg_set_default_id(gr['id'])
-
-def cfg_set_defaults_repo(repo):
-    cfg_set_default_id(repo['id'])
-
-def config_read():
+def config_reader():
+    """Read configuration from YAML file."""
     global cfg_groups, cfg_repos, cfg_global
 
     # load YAML
@@ -241,43 +239,117 @@ def config_read():
     # Assign parents property to ids
     for k in list(cfg_groups.keys()):
         for r in cfg_groups[k]["units"]:
-            if r not in cfg_repos.keys():
-                cfg_repos[r] = { 'id': r, 'type': 'repo' }
-            if "parents" not in cfg_repos[r].keys():
-                cfg_repos[r]["parents"] = []
-            cfg_repos[r]["parents"].append(k)
+            dic = get_by_id_dic(r)
+            if not dic:
+                dic = cfg_repos[r] = { 'id': r, 'type': 'repo', 'parent': k }
+            if "parents" not in dic: dic["parents"] = []
+            dic["parents"].append(k)
 
-    # Find orphan repos ?
+    # Find group parent
+    for k in cfg_groups:
+        if 'parent' not in cfg_groups[k] or not cfg_groups[k]['parent']:
+            if 'parents' not in cfg_groups[k] or not cfg_groups[k]['parents']:
+                cfg_groups[k]['parent'] = 'global'
+            else:
+                cfg_groups[k]['parent'] = cfg_groups[k]['parents'][0]
+
+    # Find orphan repos [not used ?]
     for r in list(cfg_repos.keys()):
-        if "parents" not in cfg_repos[r].keys() or not cfg_repos[r]["parents"]:
+        if "parents" not in cfg_repos[r] or not cfg_repos[r]["parents"]:
             cfg_repos[r]["parent"]  = "global"
             cfg_repos[r]["parents"] = ["orphan",]
             cfg_groups["orphan"]["units"].append(r)
+        if 'parent' not in cfg_repos[r] or not cfg_repos[r]['parent']:
+            cfg_repos[r]['parent'] = 'global'
+        else:
+            cfg_repos[r]['parent'] = cfg_repos[r]['parents'][0]
 
+    # setup default group options
+    for k in cfg_groups:
+        cfg_set_default_id(k)
+    
+    # setup default repo options
+    for k in cfg_repos:
+        cfg_set_default_id(k)
+        set_dict_default(cfg_repos[k], {"upstreams": {'local': []} })
+    
     return 0
 
+#-----------------------------------------------------------
+def cmd_list(key):
+    dic = get_by_id_dic(key)
+    if not dic: print("Unknown object: %s"%(key))
+    else: print("<%s>-[%s]: %s"%(dic['type'],dic['id'],dic['desc']))
+
+def cmd_status(key):
+    dic = get_by_id_dic(key)
+    if dic['type'] != 'repo': cmd_list(dic['id']); return
+    # change to repo path and execute '<vcs> status'
+    ret = sp.Popen([dic['vcs'],'status'], cwd=dic['path'])
+    ret.wait()
+    if ret.returncode: return (False, dic['id'])
+    return (True, dic['id'])
+
+def cmd_info(key):
+    dic = get_by_id_dic(key)
+
+def cmd_cmds(key):
+    dic = get_by_id_dic(key)
+    if dic['type'] == 'group':
+        for u in dic['units']: cmd_cmds(u)
+        return
+
+def cmd_sync(key):
+    if dic['type'] == 'group':
+        for u in dic['units']: cmd_sync(u)
+        return
+    cmd_fetch(key)
+    cmd_pull(key)
+    cmd_push(key)
+
+def cmd_fetch(key):
+    dic = get_by_id_dic(key)
+    if dic['type'] == 'group':
+        for u in dic['units']: cmd_fetch(u)
+        return
+
+def cmd_pull(key):
+    dic = get_by_id_dic(key)
+    if dic['type'] == 'group':
+        for u in dic['units']: cmd_fetch(u)
+        return
+
+def cmd_push(key):
+    dic = get_by_id_dic(key)
+    if dic['type'] == 'group':
+        for u in dic['units']: cmd_fetch(u)
+        return
+
+#-----------------------------------------------------------
 def print_test():
     # print
-    from pprint import pprint
+    print("=============== global =============")
     pprint(cfg_global)
     for k in list(cfg_groups.keys()):
         print("Group [%s]:"%k)
-        pprint(cfg_groups[k]["units"])
     pprint(cfg_groups.keys())
     pprint(cfg_repos.keys())
 
-#-----------------------------------------------------------
 # Main
 def main(argv):
+    global g_cmd, g_objs, cfg_repos, cfg_groups
     if len(argv) < 2 or cli_options(argv[1:]) != 0:
         print(__doc__ % argv[0])
         exit(0)
-    n_err = config_read()
-    if n_err == 0:
-        print_test()
-    else:
-        print(g_fcfg)
+    n_err = config_reader()
+    if n_err != 0:
         print("Error: %s"%msg_ret[n_err])
+        return
+    # command
+    if '-a' in g_objs:
+        g_objs = list(cfg_repos.keys())
+        g_objs.extend( list(cfg_groups.keys()) )
+    for o in g_objs: eval("cmd_%s(o)"%(g_cmd))
 
 #-----------------------------------------------------------
 if __name__ == "__main__":

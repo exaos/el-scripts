@@ -1,6 +1,18 @@
 # -*- mode: org; coding: utf-8
 #+TITLE: repos 使用说明
 
+- [X] CLI parser -- cli_options(argv)
+- [X] config_reader(), config_reformer()
+- [ ] cmd_
+  - [ ] list
+  - [ ] status
+  - [ ] info
+  - [ ] cmds
+  - [ ] sync
+  - [ ] fetch
+  - [ ] pull
+  - [ ] push
+
 * 命令与参数
 
 - 用法 :: =repos [options] <commands> [cmd-options] [object]=
