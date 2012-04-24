@@ -12,6 +12,7 @@ repos=(
     $HOME/Workspace/exaos/mynotes
     $HOME/Workspace/exaos/daily
     $HOME/Workspace/exaos/utils/goagent
+    $HOME/Workspace/exaos/scripts
 )
 
 sync_repo () {
