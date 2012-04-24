@@ -47,10 +47,8 @@ def which(program):
     is_exe = lambda f: os.path.exists(f) and os.access(f,os.X_OK)
     fp, fn = os.path.split(program)
     if fp and is_exe(program): return program
-    f_list = filter(is_exe,
-                    [ os.path.join(p,fn) for p in
-                      os.environ["PATH"].split(os.pathsep) ])
-    if f_list: return f_list[0]
+    for f in [os.path.join(p,fn) for p in os.environ["PATH"].split(os.pathsep)]:
+        if is_exe(f): return f
     return None
 
 def set_dict_default(ddst, dsrc):

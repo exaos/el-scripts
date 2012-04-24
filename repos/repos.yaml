@@ -1,3 +1,6 @@
+#@+leo-ver=5-thin
+#@+node:exaos.20120423140933.6119: * @file repos.yaml
+#@@language yaml
 # mode: yaml; coding: utf-8
 
 ####################################################################
@@ -146,3 +149,4 @@ Git:
     - git
     - gitignore
 
+#@-leo
