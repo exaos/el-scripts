@@ -68,7 +68,7 @@ global:
 5. 保留关键定：不可用于 repo 或 group 的名称
    - global -- 全局
    - orphan -- 组名，存储独立的 repo
-   - default, path, type, vcs, id, units, parents
+   - default, path, type, vcs, id, units, parents, all
    - VCS 工具名称 -- git, git-svn, hg, bzr, svn, cvs
 
 ** 全局属性

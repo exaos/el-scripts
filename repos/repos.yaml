@@ -89,8 +89,6 @@ daq:
   desc: DAQ repositories
   type: group
   units:
-    - midas
-    - mxml
     - lumidas
     - mdaq
     - bots
@@ -98,6 +96,15 @@ daq:
 
 ####################################################################
 ## Languages and tools
+
+devel:
+  desc: All kinds of sources
+  type: group
+  units:
+    - lang-Lua
+    - lang-Python
+    - lang-Julia
+    - Git
 
 # Lua
 lang-Lua:
@@ -107,7 +114,6 @@ lang-Lua:
     - LuaDist
     - luajit-2.0
     - alien
-    - rocks
 
 # Python
 lang-Python:
@@ -117,7 +123,14 @@ lang-Python:
     - pypy
     - pyd
     - elmer
-    - cpython-fullhistory
+#    - cpython-fullhistory
+
+cpython:
+  vcs: hg
+pyd:
+  vcs: hg
+pypy:
+  vcs: hg
 
 # Julia
 lang-Julia:

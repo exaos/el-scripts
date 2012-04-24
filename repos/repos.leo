@@ -15,6 +15,7 @@
 <v t="exaos.20120423140933.6117" a="E"><vh>@path ./</vh>
 <v t="exaos.20120423140933.6119"><vh>@auto repos.yaml</vh></v>
 <v t="exaos.20120423140933.6120"><vh>@auto repos.org</vh></v>
+<v t="exaos.20120424151313.2248" a="E"><vh>@auto repos.py</vh></v>
 </v>
 <v t="exaos.20120423140933.6121" a="E"><vh>Structure</vh>
 <v t="exaos.20120423140933.6122"><vh>global</vh></v>
