@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''Purpose: apply often-used commands to your repositories as defined
 
-Usage: %s [options] <commands> [cmd-options] [id] [...]
+Usage: %s [options] <commands> [cmd-options] [obj] [obj ...]
 
 Options:
   -c | --config <filename>  -- specify configuration file
@@ -10,22 +10,22 @@ Options:
   -v | --version            -- show version
 
 Commands:
-  ls | list   -- show objects specified or all if no one given
-  st | status -- show group or repository status (default if no cmds)
-  info        -- show group or repository information
-  cmds        -- command sequence defined in configure file (default)
-  sync        -- syncronize (pull and push) with repository defined
+  list    --  show objects specified or all if no one given
+  status  --  show group or repository status (default if no cmds)
+  info    --  show group or repository information
+  cmds    --  command sequence defined in configure file (default)
+  sync    --  syncronize (pull and push) with repository defined
 
   others: fetch, pull, push
 
-ID:
-  -a | --all     -- all repositories defined
-  [repo | group] -- repository or group ID
+Object:
+  -a | --all  --  all repositories defined
+  [obj]       --  repository or group ID
 '''
 
 import os, sys
 import subprocess as sp
-from pprint import pprint
+from pprint import pformat
 
 try:
     from argparse import ArgumentParser
@@ -131,7 +131,7 @@ def cfg_set_default_global():
           'git-svn': { 'path': which('git'),
                        'cmds': ["svn fetch", "svn rebase -l", "gc --aggressive"] },
           'git': { 'path': which('git'),
-                   'cmds': [ "fetch --all", "pull origin", "gc --aggressive" ] },
+                   'cmds': [ "fetch --all", "pull", "gc --aggressive" ] },
           'hg':  { 'path': which('hg'),
                    'cmds': [ "pull", "merge" ] },
           'bzr': { 'path': which('bzr'),
@@ -261,6 +261,8 @@ def config_reader():
             if dic['type'] == 'repo':
                 dic['parents'] = ['orphan']
                 cfg_groups['orphan']['units'].append(k)
+            else:
+                dic['parents'] = ['global']
         else:
             if 'parent' not in dic or not dic['parent']:
                 dic['parent'] = dic['parents'][0]
@@ -269,11 +271,6 @@ def config_reader():
     for k in id_keys: cfg_set_default_id(k)
 
     return 0
-#-----------------------------------------------------------
-def cmd_list(dic):
-    print("path: %s"%dic['path'])
-    print("desc: %s"%dic['desc'])
-
 def cmd_status(dic):
     if dic['type'] == 'group': return
     # change to repo path and execute '<vcs> status'
@@ -285,37 +282,30 @@ def cmd_status(dic):
 def cmd_info(dic):
     for k in ['path', 'vcs', 'parent', 'parents', 'desc']:
         print("%s: %s"%(k,dic[k]))
+    if 'units' in dic and dic['units']:
+        print("units: %s"%pformat(dic['units']))
 def cmd_cmds(dic):
-    if dic['type'] == 'group': return (True,)
-    if not dic['cmds']: return (False,)
+    ls_err = []
+    if dic['type'] == 'group': return
+    if not dic['cmds']: return
     for c in dic['cmds']:
-        ret = sp.Popen([dic['vcs'],c], cwd=dic['path'])
+        cli = dic['vcs'] + ' ' + c
+        print("-- command: %s"%(cli))
+        ret = sp.Popen(cli.split(), cwd=dic['path'])
         ret.wait()
-        if ret.returncode: return (False, dic['id'])
-        return (True, dic['id'])
+        if ret.returncode: ls_err.append(cli)
+    return ls_err
 def cmd_sync(dic):
-    if dic['type'] == 'group':
-        for u in dic['units']: cmd_sync(get_by_id_dic(u))
-        return
     cmd_fetch(dic)
     cmd_pull(dic)
     cmd_push(dic)
 
 def cmd_fetch(dic):
-    if dic['type'] == 'group':
-        for u in dic['units']: cmd_fetch(get_by_id_dic(u))
-        return
-
+    pass
 def cmd_pull(dic):
-    if dic['type'] == 'group':
-        for u in dic['units']: cmd_fetch(get_by_id_dic(u))
-        return
-
+    pass
 def cmd_push(dic):
-    if dic['type'] == 'group':
-        for u in dic['units']: cmd_fetch(get_by_id_dic(u))
-        return
-
+    pass
 def cmd_on_id(key):
     dic = get_by_id_dic(key)
     if not dic:
@@ -323,7 +313,10 @@ def cmd_on_id(key):
         return
     print("== %s: %s =="%(dic['type'],get_by_id_ptree(key)))
     if dic['type'] == 'group':
-        for u in dic['units']: cmd_on_id(u)
+        if g_cmd == 'info': cmd_info(dic)
+        elif g_cmd == 'list': return
+        else:
+            for u in dic['units']: cmd_on_id(u)
     else: eval("cmd_%s(dic)"%(g_cmd))
 # Main
 def main(argv):

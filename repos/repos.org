@@ -1,6 +1,3 @@
-#@+leo-ver=5-thin
-#@+node:exaos.20120423140933.6120: * @file repos.org
-#@@language org
 # -*- mode: org; coding: utf-8
 #+TITLE: repos 使用说明
 
