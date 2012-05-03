@@ -25,10 +25,6 @@ editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -49,12 +45,6 @@ layouts = {
 -- }}}
 
 -- {{{ Tags
--- Define a tag table which hold all screen tags.
--- tags = {}
--- for s = 1, screen.count() do
---    -- Each screen has its own tag table.
---    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
--- end
 tags = {
    names = { "file", 2, "net", 4, "emacs", 6, "doc", 8, "misc" },
    layout = { layouts[1], layouts[1], layouts[1], layouts[1], layouts[2],
@@ -71,34 +61,30 @@ myawesomemenu = {
    { "Manual", terminal .. " -e man awesome" },
    { "Edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
    { "Restart", awesome.restart },
-   { "Quit", awesome.quit },
+   { "Quit",    awesome.quit },
    { "GDM Switch",  "gdmflexiserver", "/usr/share/pixmaps/gdm.png"},
 }
 
 mycommons = {
-   -- {"Emacs 23",     "emacs23",       "/usr/share/pixmaps/gnome-emacs.png" },
-   {"Emacs23 Client", "emacsclient.emacs23 -nc", "/usr/share/pixmaps/gnome-emacs.png" },
+   {"Emacs Client", "emacsclient -a emacs -nc", "/usr/share/pixmaps/gnome-emacs.png" },
    {"ipython", terminal .. " -e ipython" },
+   {"spyder", "spyder", os.getenv("HOME") .. "/.icons/spyder.png"},
    {"bpython", terminal .. " -e bpython", "/usr/share/pixmaps/python.xpm" },
    {"bpython-gtk", "bpython-gtk", "/usr/share/pixmaps/bpython.png" },
-   -- { "File Manager", "pcmanfm",    "/usr/share/pixmaps/gnome-folder.png" },
    {"Dolphin", "dolphin", "/usr/share/icons/oxygen/64x64/places/folder.png"},
    {"Nautilus","nautilus --no-desktop","/usr/share/pixmaps/gnome-folder.png" },
    {"VirtualBox",   "VirtualBox",    "/usr/share/pixmaps/VBox.png" },
    {"Google Chrome","google-chrome", "/opt/google/chrome/product_logo_64.png" },
-   -- { "Iceweasel",    "iceweasel",  "/usr/share/pixmaps/iceweasel.png" },
-   -- { "Pidgin",       "pidgin",     "/usr/share/pixmaps/pidgin-menu.xpm" },
 }
 
 mymainmenu = awful.menu(
-   {
-      items = {
-	 {"Awesome", myawesomemenu, beautiful.awesome_icon },
-	 {"Debian", debian.menu.Debian_menu.Debian,
+   { items = {
+	{ "Awesome", myawesomemenu, beautiful.awesome_icon },
+	{ "Debian",  debian.menu.Debian_menu.Debian,
 	  "/usr/share/pixmaps/debian-logo.png" },
-	 {"My Apps", mycommons, myicon },
-	 {"Open Term", terminal, "/usr/share/pixmaps/gnome-xterm.png" },
-   }})
+	{ "My Apps", mycommons, myicon },
+	{ "Open Term", terminal, "/usr/share/pixmaps/gnome-xterm.png" },
+  }})
 
 mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
                                      menu = mymainmenu })
@@ -201,11 +187,12 @@ end
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
-		awful.button({ }, 3, function () mymainmenu:toggle() end),
-		awful.button({ }, 4, awful.tag.viewnext),
-		awful.button({ }, 5, awful.tag.viewprev)
-	  ))
+root.buttons(
+   awful.util.table.join(
+      awful.button({ }, 3, function () mymainmenu:toggle() end),
+      awful.button({ }, 4, awful.tag.viewnext),
+      awful.button({ }, 5, awful.tag.viewprev)
+))
 -- }}}
 
 -- {{{ Key bindings
@@ -364,6 +351,7 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
+-- use `xprop` to get class and other identifiers of clients
 awful.rules.rules = {
    -- All clients will match this rule.
    { rule = { },
@@ -372,26 +360,18 @@ awful.rules.rules = {
 		    focus = true,
 		    keys = clientkeys,
 		    buttons = clientbuttons } },
-   { rule = { class = "MPlayer" },
-     properties = { floating = true } },
-   { rule = { class = "Gimp" },
-     properties = { floating = true } },
+   ---------------------------------------------------------------------
    -- Set file-browser to tag 1: pcmanfm
-   { rule = { class = "Pcmanfm" },
-     properties = { tag = tags[1][1] } },
+   -- { rule = { class = "Pcmanfm" }, properties = { tag = tags[1][1] } },
    -- Set emacs to tag 5: Emacs
-   -- { rule = { class = "Emacs" },
-   --   properties = { tag = tags[1][5] } },
-   -- Set chrome to always map on tags number 4 of screen 1.
-   { rule = { class = "Google-chrome" },
-     properties = { tag = tags[1][3], floating = true } },
-   -- Set Firefox to always map on tags number 5 of screen 1.
-   { rule = { class = "Firefox" },
-     properties = { tag = tags[1][2], floating = true } },
-   ---------------------------------------------------------
-   -- my settings: goldendict
-   { rule = { class = "Goldendict" },
-     properties = { floating = true } },
+   -- { rule = { class = "Emacs" }, properties = { tag = tags[1][5] } },
+   ---------------------------------------------------------------------
+   { rule = { class = "MPlayer" }, properties = { floating = true } },
+   { rule = { class = "Goldendict" }, properties = { floating = true } },
+   { rule = { class = "Google-chrome" }, properties = { floating = true } },
+   { rule = { class = "Firefox" }, properties = { floating = true } },
+   { rule = { class = "Gimp" }, properties = { floating = true } },
+   { rule = { class = "Zim" },  properties = { floating = true } },
 }
 -- }}}
 
@@ -402,7 +382,6 @@ client.add_signal(
    function (c, startup)
       -- Add a titlebar
       -- awful.titlebar.add(c, { modkey = modkey })
-
       -- Enable sloppy focus
       c:add_signal(
 	 "mouse::enter",
@@ -424,25 +403,18 @@ client.add_signal(
 	 end
       end
    end)
-
-client.add_signal(
-   "focus",
-   function(c) c.border_color = beautiful.border_focus end)
-client.add_signal(
-   "unfocus",
-   function(c) c.border_color = beautiful.border_normal end)
+client.add_signal("focus",   function(c) c.border_color = beautiful.border_focus  end)
+client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-
 -- Autorun programs
-autorun = true
-autorunApps = {
-   "xrdb -load " .. os.getenv("HOME") .. "/.Xdefaults",
-   "gnome-settings-daemon",
-   "goldendict",
-   "xscreensaver -nosplash",
-}
-if autorun then
+do
+   local autorunApps = {
+      "xrdb -load " .. os.getenv("HOME") .. "/.Xdefaults",
+      "gnome-settings-daemon",
+      "goldendict",
+      "xscreensaver -nosplash",
+   }
    for app = 1, #autorunApps do
       awful.util.spawn(autorunApps[app])
    end
