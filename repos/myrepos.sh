@@ -13,6 +13,8 @@ repos=(
     $HOME/Workspace/exaos/daily
     $HOME/Workspace/exaos/utils/goagent
     $HOME/Workspace/exaos/scripts
+    $HOME/Workspace/exaos/site/org-src
+    $HOME/Workspace/exaos/site
 )
 
 sync_repo () {
