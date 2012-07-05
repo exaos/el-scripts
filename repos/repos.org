@@ -183,3 +183,7 @@ o-blog:
         - master
 #+end_example
 #@-leo
+* Design in OOD
+  - Classes: repo, group
+  - Operations: commands
+
