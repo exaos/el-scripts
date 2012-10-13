@@ -15,8 +15,8 @@ myrepos = {
     'daily'   : 'Workspace/exaos/daily',
     'goagent' : 'Workspace/exaos/goagent',
     'scripts' : 'Workspace/exaos/scripts',
-    'org-src' : 'Workspace/exaos/site/org-src',
-    'site'    : 'Workspace/exaos/site'
+    'org-src' : 'Workspace/exaos/mysite-src',
+    'site'    : 'Workspace/exaos/mysite'
     }
 
 #-----------------------------------------------------------
