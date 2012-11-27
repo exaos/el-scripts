@@ -6,6 +6,16 @@ then
     export HOME=/d/Exaos
 fi
 
+abs_path () {
+    if [ -d $1 ]; then
+	TMPDIR=$1
+    else
+	TMPDIR=`dirname $1`
+    fi
+    PSTR=`cd ${TMPDIR} && pwd -P`
+    echo $PSTR
+}
+
 #### Repositories monitered
 repos=(
     $HOME/Workspace/exaos/myconfig
@@ -46,8 +56,7 @@ sync_host () {
 	else
 	    lrpath="$2"
 	fi
-	RREPO_ROOT=`readlink -f $lrpath`
-	#RREPO_ROOT=$lrpath
+	RREPO_ROOT=`abs_path $lrpath`
     fi
     if [ -z "${RREPO_ROOT}" ]; then
 	echo "WARNING: Incorrect repositories root path!"
