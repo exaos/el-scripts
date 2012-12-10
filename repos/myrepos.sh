@@ -4,6 +4,9 @@ OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
 if [[ "${OS_TYPE}" = cygwin* ]] || [[ "${OS_TYPE}" = msys ]] || [[ "${OS_TYPE}" = mingw* ]]
 then
     export HOME=/d/Exaos
+    export LOCALREPOS=/d/Exaos/Library/Repos
+else
+    export LOCALREPOS=$HOME/Repos
 fi
 
 abs_path () {
@@ -52,7 +55,7 @@ sync_host () {
 	RREPO_ROOT="${1}:Repos"
     else
 	if [ -z "$2" ] ; then
-            lrpath="$HOME/Repos"
+            lrpath=${LOCALREPOS}
 	else
 	    lrpath="$2"
 	fi
