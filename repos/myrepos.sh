@@ -3,9 +3,10 @@
 OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
 if [[ "${OS_TYPE}" = cygwin* ]] || [[ "${OS_TYPE}" = msys ]] || [[ "${OS_TYPE}" = mingw* ]]
 then
-    export HOME=/d/Exaos
+    export WORKSPACE=/d/Exaos/Workspace
     export LOCALREPOS=/d/Exaos/Library/Repos
 else
+    export WORKSPACE=$HOME/Workspace
     export LOCALREPOS=$HOME/Repos
 fi
 
@@ -21,13 +22,13 @@ abs_path () {
 
 #### Repositories monitered
 repos=(
-    $HOME/Workspace/exaos/myconfig
-    $HOME/Workspace/exaos/mynotes
-    $HOME/Workspace/exaos/daily
-    $HOME/Workspace/exaos/utils/goagent
-    $HOME/Workspace/exaos/scripts
-    $HOME/Workspace/exaos/mysite-src
-    $HOME/Workspace/exaos/mysite
+    $WORKSPACE/exaos/myconfig
+    $WORKSPACE/exaos/mynotes
+    $WORKSPACE/exaos/daily
+    $WORKSPACE/exaos/utils/goagent
+    $WORKSPACE/exaos/scripts
+    $WORKSPACE/exaos/mysite-src
+    $WORKSPACE/exaos/mysite
 )
 
 sync_repo () {
