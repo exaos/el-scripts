@@ -23,7 +23,6 @@ abs_path () {
 #### Repositories monitered
 repos=(
     $WORKSPACE/exaos/myconfig
-    $WORKSPACE/exaos/mynotes
     $WORKSPACE/exaos/daily
     $WORKSPACE/exaos/utils/goagent
     $WORKSPACE/exaos/scripts
