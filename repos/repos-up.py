@@ -10,7 +10,10 @@ def get_cmd_path(cmd):
 
 vcs_tools = {
     "git": { "path": get_cmd_path("git"),
-             "cmds": ["pull origin", "gc --aggressive --prune=now"] },
+             "cmds": [
+                 "pull origin",
+                 "remote prune origin",
+                 "gc --aggressive --prune=now"] },
     "git_svn": { "path": get_cmd_path("git"),
                  "cmds":["svn fetch", "svn rebase -l"] },
     "hg":  {"path": get_cmd_path("hg"),  "cmds":["pull", "update"] },
