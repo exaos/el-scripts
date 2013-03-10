@@ -11,7 +11,6 @@ import git
 myrepos = {
     'myconfig': 'Workspace/exaos/myconfig',
     'daily'   : 'Workspace/exaos/daily',
-    'goagent' : 'Workspace/exaos/utils/goagent',
     'scripts' : 'Workspace/exaos/scripts',
     'org-src' : 'Workspace/exaos/mysite-src',
     'site'    : 'Workspace/exaos/mysite'

@@ -24,7 +24,6 @@ abs_path () {
 repos=(
     $WORKSPACE/exaos/myconfig
     $WORKSPACE/exaos/daily
-    $WORKSPACE/exaos/utils/goagent
     $WORKSPACE/exaos/scripts
     $WORKSPACE/exaos/mysite-src
     $WORKSPACE/exaos/mysite
