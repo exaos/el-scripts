@@ -1,4 +1,5 @@
 #!/bin/bash
+
 abs_path () {
     if [ -d $1 ]; then
 	TMPDIR=$1
@@ -13,36 +14,73 @@ IP=/sbin/ip
 DATADIR=`abs_path $0`
 NETADD=10.10.25
 NETGWHW=00:12:44:42:70:00
-IFNAME=eth1
 
-if [[ "$1" && `zcat $DATADIR/macadd.dat | grep $NETADD.$1` ]]; then
-	ipv4=$1
-else
-	ipv4=240
-fi
+########################################################################
+function if-reset () {
+    echo "Shutting down ifname: eth0 .... eth1 ..."
+    ${IP} link set eth0 down
+    ${IP} link set eth1 down
+    sleep 1
 
-addmsg=`zcat $DATADIR/macadd.dat | grep $NETADD.$ipv4`
-mac=`echo $addmsg | awk '{print $2}'`
+    echo "Resetting default MACs ..."
+    ${IP} link set eth0 address 78:2b:cb:93:81:a2
+    ${IP} link set eth1 address 00:e0:4c:53:44:58
 
-echo "Shutting down $IFNAME ..."
-${IP} link set $IFNAME down
-${IP} addr flush dev ${IFNAME}
-## Change ethernet name to $IFNAME ?
-#${IP} link set dev eth1 name $IFNAME
+    echo "Flushing address on eth0 ..."
+    ${IP} addr flush dev eth0
+    ${IP} addr replace 192.0.31.201/24 broadcast 192.0.31.255 dev eth0
 
-sleep 1
+    echo "Raising up default links ..."
+    ${IP} link set eth0 up
+    ${IP} link set eth1 up
+}
 
-echo "Raising up $IFNAME using $NETADD.$ipv4 with $mac ..."
-${IP} link set $IFNAME address $mac
-${IP} addr add $NETADD.$ipv4 dev $IFNAME
-${IP} link set $IFNAME up
+########################################################################
+function if-raise () {
+    IFNAME=${1-eth1}
 
-echo 
-echo "ARP setting ..."
-${IP} neigh add $NETADD.10 lladdr $NETGWHW dev $IFNAME
+    if [[ "$2" && `zcat $DATADIR/macadd.dat | grep $NETADD.$2` ]]; then
+	ADDv4=$2
+    else
+	ADDv4=240
+    fi
 
-echo 
-echo "Add default route -- $NETADD.10 ..."
-${IP} route add $NETADD.10 dev $IFNAME
-${IP} route add default via $NETADD.10
+    addmsg=`zcat $DATADIR/macadd.dat | grep $NETADD.$ADDv4`
+    mac=`echo $addmsg | awk '{print $2}'`
 
+    echo "Shutting down $IFNAME ..."
+    ${IP} link set $IFNAME down
+    ${IP} addr flush dev $IFNAME
+
+    ## Change ethernet name to $IFNAME ?
+    # ${IP} link set dev eth1 name $IFNAME
+
+    sleep 1
+
+    echo "Raising up $IFNAME using $NETADD.$ADDv4 with $mac ..."
+    ${IP} link set $IFNAME address $mac
+    ${IP} addr add $NETADD.$ADDv4/24 broadcast $NETADD.255 dev $IFNAME
+    ${IP} link set $IFNAME up
+
+    echo 
+    echo "ARP setting ..."
+    ${IP} neigh add $NETADD.10 lladdr $NETGWHW dev $IFNAME
+
+    echo 
+    echo "Add default route -- $NETADD.10 ..."
+    ${IP} route add $NETADD.10 dev $IFNAME
+    ${IP} route add default via $NETADD.10
+}
+
+########################################################################
+case "$1" in
+    reset | r)
+	if-reset
+	;;
+    help | h)
+	echo "$0  [reset | help] | [ifname] [addr]"
+	;;
+    *)
+	if-raise $@
+	;;
+esac
