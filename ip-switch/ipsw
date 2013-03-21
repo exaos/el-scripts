@@ -73,6 +73,11 @@ function if-raise () {
 }
 
 ########################################################################
+if [[ -z "$1" ]]; then
+    echo "$0  [reset | help] | [ifname] [addr]"
+    exit 0
+fi
+
 case "$1" in
     reset | r)
 	if-reset
