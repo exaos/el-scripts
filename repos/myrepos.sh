@@ -25,7 +25,6 @@ repos=(
     $WORKSPACE/exaos/myconfig
     $WORKSPACE/exaos/daily
     $WORKSPACE/exaos/scripts
-    $WORKSPACE/exaos/mysite-src
     $WORKSPACE/exaos/mysite
 )
 

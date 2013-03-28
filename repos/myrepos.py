@@ -12,7 +12,6 @@ myrepos = {
     'myconfig': 'Workspace/exaos/myconfig',
     'daily'   : 'Workspace/exaos/daily',
     'scripts' : 'Workspace/exaos/scripts',
-    'org-src' : 'Workspace/exaos/mysite-src',
     'site'    : 'Workspace/exaos/mysite'
     }
 
