@@ -16,6 +16,15 @@ NETADD=10.10.25
 NETGWHW=00:12:44:42:70:00
 
 ########################################################################
+function dns-reset () {
+    cat > /etc/resolv.conf <<EOF
+nameserver 202.38.8.1
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+}
+
+########################################################################
 function if-reset () {
     echo "Shutting down ifname: eth0 .... eth1 ..."
     ${IP} link set eth0 down
@@ -33,6 +42,22 @@ function if-reset () {
     echo "Raising up default links ..."
     ${IP} link set eth0 up
     ${IP} link set eth1 up
+}
+
+########################################################################
+function if-switch () {
+    echo "Shutting down ifname: eth0 .... eth1 ..."
+    ${IP} link set eth0 down
+    ${IP} link set eth1 down
+    sleep 1
+
+    echo "Resetting default MACs ..."
+    ${IP} link set eth0 address 78:2b:cb:93:81:a2
+    ${IP} link set eth1 address 00:e0:4c:53:44:58
+
+    echo "Flushing address on eth1 ..."
+    ${IP} addr flush dev eth1
+    ${IP} addr replace 192.0.31.201/24 broadcast 192.0.31.255 dev eth1
 }
 
 ########################################################################
@@ -82,10 +107,17 @@ case "$1" in
     reset | r)
 	if-reset
 	;;
+    switch | sw)
+	if-switch
+	sleep 1
+	dns-reset
+	;;
     help | h)
 	echo "$0  [reset | help] | [ifname] [addr]"
 	;;
     *)
 	if-raise $@
+	sleep 1
+	dns-reset
 	;;
 esac
