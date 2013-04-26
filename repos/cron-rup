@@ -1,0 +1,6 @@
+#!/bin/bash
+SH_RUP=${HOME}/Workspace/exaos/scripts/repos/repos-up.py
+
+cd $HOME/Workspace
+${SH_RUP} devel docs emacs games math physics server system utils \
+  > log/`date +%F`.log 2>&1
