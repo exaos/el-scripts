@@ -1,0 +1,9 @@
+# -*- mode: org; coding: utf-8; -*-
+#+TITLE: 迅雷下载的相关代码
+
+参考：
+  1. 迅雷离线下载 (会员) -- https://github.com/iambus/xunlei-lixian
+  2. 迅雷看看视频转换 -- file:./xve
+  3. 迅雷 wget 下载
+     - file:./xl-wget
+     - https://bitbucket.org/Roowe/mytools/src

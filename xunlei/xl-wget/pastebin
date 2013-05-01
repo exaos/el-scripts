@@ -1,0 +1,7 @@
+#!/bin/bash
+function uploadCode {
+  cat $1 | pastebincl -n $1 -s $2 | grep -E -o  "http.*"
+}
+uploadCode $1 $2 | xclip -selection c
+#notify-send "Done"
+echo `xclip -selection c -o`
