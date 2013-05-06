@@ -28,7 +28,7 @@ chk_cfg_emacs () {
     diff ${WORKSPACE}/exaos/myconfig/emacs/my-face.el $HOME/.emacs.d/my-face.el
 
     [[ ! -f ${WORKSPACE}/exaos/daily/myorg/my-org.el ]] && exit 1
-    echo "============ [DIFF] my-face.el ============"
+    echo "============ [DIFF] my-org.el ============="
     diff ${WORKSPACE}/exaos/daily/myorg/my-org.el $HOME/.emacs.d/my-org.el
 }
 
