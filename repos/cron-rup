@@ -2,6 +2,6 @@
 SH_RUP=${HOME}/Workspace/exaos/scripts/repos/repos-up.py
 
 cd ${HOME}/Workspace
-${SH_RUP} devel docs emacs games math physics \
+${SH_RUP} cern devel docs emacs games math physics \
           server system utils > log/all-`date +%F`.log 2>&1
 ${SH_RUP} ${HOME}/Workspace > log/ws-`date +%F`.log 2>&1
