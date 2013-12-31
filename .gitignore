@@ -1,7 +1,11 @@
-tmp
-test
+# temp files
 *~
 \~*
 \#*
 .*~
+*.pyc
+
+# directories
+tmp/
+test/
 
