@@ -10,7 +10,7 @@ LOG_DIR=/var/log/mod_evasive/
 IP_LIST=`ls -1 ${LOG_DIR} | awk -F'-' '{ print $2 }' | sort -n`
 UFW_DENY_LIST=`ufw status | grep "Anywhere" | grep "/tcp"`
 
-WHITE_IPS=()
+WHITE_IPS=( 42.96.174.78 )
 
 function add_ip_to_ufw ()
 {
