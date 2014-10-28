@@ -22,10 +22,11 @@ abs_path () {
 
 #### Repositories monitered
 repos=(
-    $WORKSPACE/exaos/myconfig
-    $WORKSPACE/exaos/daily
-    $WORKSPACE/exaos/scripts
     $WORKSPACE/exaos/mysite
+    $WORKSPACE/exaos/myconfig
+    $WORKSPACE/exaos/scripts
+    $WORKSPACE/exaos/emacs-starter
+    $WORKSPACE/exaos/daily
 )
 
 sync_repo () {
