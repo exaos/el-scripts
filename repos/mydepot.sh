@@ -2,28 +2,28 @@
 # -*- mode: shell-script; coding: utf-8; -*-
 # by Exaos Lee (exaos.lee@gmail.com)
 
-DEPOT_BASE=${DEPOT:-/data/depot}
+DEPOT_BASE=${DEPOT_BASE:-/data/depot}
 DEPOTS=(Job Personal Topics)
 
 depot_status() {
     echo "==> Status: $1"
     cd ${DEPOT_BASE}/$1
     git status
-    cd -
+    cd ${OLDPWD}
 }
 
 depot_sync() {
     echo "==> Sync $1 with $2 ..."
     cd ${DEPOT_BASE}/$1
     git-annex sync $2
-    cd -
+    cd ${OLDPWD}
 }
 
 depot_copy() {
     echo "==> Copy data to depot $2 ..."
     cd ${DEPOT_BASE}/$1
     git-annex copy --to $2 --not --in $2
-    cd -
+    cd ${OLDPWD}
 }
 
 depot_cmd() {
@@ -35,7 +35,7 @@ depot_cmd() {
     cd ${DEPOT_BASE}/${BASE}
     echo "[base:${BASE}] \$ ${CMD} ${*} "
     ${CMD} ${*}
-    cd -
+    cd ${OLDPWD}
 }
 
 cmd_all() {
