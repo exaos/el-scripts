@@ -6,28 +6,28 @@ DEPOT_BASE=${DEPOT_BASE:-/data/depot}
 DEPOTS=(Job Personal Topics)
 
 depot_status() {
-    echo "==> Status: $1"
+    echo "==> [${DEPOT_BASE}: $1] \$ Status:"
     cd ${DEPOT_BASE}/$1
     git status
     cd ${OLDPWD}
 }
 
 depot_sync() {
-    echo "==> Sync $1 with $2 ..."
+    echo "==> [${DEPOT_BASE}: $1] \$ sync with $2 ..."
     cd ${DEPOT_BASE}/$1
     git-annex sync $2
     cd ${OLDPWD}
 }
 
 depot_copy() {
-    echo "==> Copy data to depot $2 ..."
+    echo "==> [${DEPOT_BASE}: $1] \$ Copy data to depot $2 ..."
     cd ${DEPOT_BASE}/$1
     git-annex copy --to $2 --not --in $2
     cd ${OLDPWD}
 }
 
 depot_cmd() {
-    echo "==> on ($1) running ($2) ..."
+    echo "==> [${DEPOT_BASE}: $1] \$ $2"
     BASE=${1}
     shift 1
     CMD=${1:-git}
