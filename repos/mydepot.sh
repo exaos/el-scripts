@@ -33,8 +33,8 @@ depot_cmd() {
     CMD=${1:-git}
     shift 1
     cd ${DEPOT_BASE}/${BASE}
-    echo "[base:${BASE}] \$ ${CMD} ${*} "
-    ${CMD} ${*}
+    echo "[base:${BASE}] \$ ${CMD} ${@} "
+    ${CMD} "${@}"
     cd ${OLDPWD}
 }
 
@@ -87,7 +87,7 @@ case "$1" in
         copy_all ${DEST}
         ;;
     *)
-        cmd_all $@
+        cmd_all "$@"
         ;;
 esac
 

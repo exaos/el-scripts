@@ -1,14 +1,8 @@
 #!/bin/bash
 
 OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
-if [[ "${OS_TYPE}" = cygwin* ]] || [[ "${OS_TYPE}" = msys ]] || [[ "${OS_TYPE}" = mingw* ]]
-then
-    export WORKSPACE=/d/Exaos/Workspace
-    export LOCALREPOS=/d/Exaos/Library/Repos
-else
-    export WORKSPACE=$HOME/Workspace
-    export LOCALREPOS=$HOME/Repos
-fi
+WORKSPACE=${WORKSPACE:-$HOME/Workspace}
+LOCALREPOS=${LOCALREPOS:-$HOME/MyRepos}
 
 abs_path () {
     if [ -d $1 ]; then
