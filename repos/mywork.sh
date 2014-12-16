@@ -17,8 +17,8 @@ abs_path () {
 #### Repositories monitered
 repos=(
     $WORKSPACE/exaos/mysite
-    $WORKSPACE/exaos/myconfig
     $WORKSPACE/exaos/scripts
+    $WORKSPACE/exaos/settings
     $WORKSPACE/exaos/emacs-starter
     $WORKSPACE/exaos/daily
 )
