@@ -16,11 +16,11 @@ abs_path () {
 
 #### Repositories monitered
 repos=(
-    $WORKSPACE/exaos/mysite
-    $WORKSPACE/exaos/scripts
-    $WORKSPACE/exaos/settings
-    $WORKSPACE/exaos/emacs-starter
-    $WORKSPACE/exaos/daily
+    ${WORKSPACE}/vivodo/mysite
+    ${WORKSPACE}/vivodo/scripts
+    ${WORKSPACE}/vivodo/settings
+    ${WORKSPACE}/vivodo/emacs-starter
+    ${WORKSPACE}/vivodo/daily
 )
 
 sync_repo () {
