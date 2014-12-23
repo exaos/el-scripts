@@ -3,6 +3,7 @@
 # by Exaos Lee (exaos.lee@gmail.com)
 
 DEPOT_BASE=${DEPOT_BASE:-/data/depot}
+DEPOT_DISK=${DEPOT_DISK:-EADEPOT}
 DEPOTS=(Job Personal Topics)
 
 depot_status() {
@@ -33,7 +34,7 @@ depot_cmd() {
     CMD=${1:-git}
     shift 1
     cd ${DEPOT_BASE}/${BASE}
-    echo "[base:${BASE}] \$ ${CMD} ${@} "
+    echo "[base:${BASE}] \$ ${CMD} ${@}"
     ${CMD} "${@}"
     cd ${OLDPWD}
 }
@@ -64,7 +65,8 @@ copy_all() {
 
 usage() {
     echo "Usage: $0 <cmd> [<parameters>]"
-    echo "Base directory: ${DEPOT_BASE}"
+    echo "Depot base path: ${DEPOT_BASE}"
+    echo "Archive disk:    ${DEPOT_DISK}"
     echo "Handling depots: ${DEPOTS[@]}"
     echo "Commands: status sync <cmd...>"
 }
@@ -79,11 +81,11 @@ case "$1" in
         status_all
         ;;
     sync)
-        DEST=${2:-EADEPOT}
+        DEST=${2:-${DEPOT_DISK}}
         sync_all ${DEST}
         ;;
     cp | copy)
-        DEST=${2:-EADEPOT}
+        DEST=${2:-${DEPOT_DISK}}
         copy_all ${DEST}
         ;;
     *)
