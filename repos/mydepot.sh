@@ -4,7 +4,7 @@
 
 DEPOT_BASE=${DEPOT_BASE:-/data/depot}
 DEPOT_DISK=${DEPOT_DISK:-EADEPOT}
-DEPOTS=(Job Personal Topics)
+DEPOT_BOTS=${DEPOT_BOTS:-"Job Personal Topics"}
 
 depot_status() {
     echo "==> [${DEPOT_BASE}: $1] \$ Status:"
@@ -40,25 +40,25 @@ depot_cmd() {
 }
 
 cmd_all() {
-    for d in ${DEPOTS[@]} ; do
+    for d in ${DEPOT_BOTS} ; do
         depot_cmd $d $@
     done
 }
 
 status_all() {
-    for d in ${DEPOTS[@]} ; do
+    for d in ${DEPOT_BOTS} ; do
         depot_status $d $1
     done
 }
 
 sync_all() {
-    for d in ${DEPOTS[@]} ; do
+    for d in ${DEPOT_BOTS} ; do
         depot_sync $d $1
     done
 }
 
 copy_all() {
-    for d in ${DEPOTS[@]} ; do
+    for d in ${DEPOT_BOTS} ; do
         depot_copy $d $1
     done
 }
@@ -67,7 +67,7 @@ usage() {
     echo "Usage: $0 <cmd> [<parameters>]"
     echo "Depot base path: ${DEPOT_BASE}"
     echo "Archive disk:    ${DEPOT_DISK}"
-    echo "Handling depots: ${DEPOTS[@]}"
+    echo "Handling depots: ${DEPOT_BOTS}"
     echo "Commands: status sync <cmd...>"
 }
 
