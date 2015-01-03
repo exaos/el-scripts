@@ -9,16 +9,22 @@ def get_cmd_path(cmd):
     return os.path.abspath(output.strip())
 
 vcs_tools = {
-    "git": { "path": get_cmd_path("git"),
-             "cmds": [
-                 "pull origin",
-                 "remote prune origin",
-                 "gc --aggressive --prune=now"] },
-    "git_svn": { "path": get_cmd_path("git"),
-                 "cmds":["svn fetch", "svn rebase -l"] },
-    "hg":  {"path": get_cmd_path("hg"),  "cmds":["pull", "update"] },
-    "bzr": {"path": get_cmd_path("bzr"), "cmds":["pull",] },
-    "svn": {"path": get_cmd_path("svn"), "cmds":["update",]},
+    "git":     get_cmd_path("git"),
+    "git_svn": get_cmd_path("git") + " svn",
+    "hg":      get_cmd_path("hg"),
+    "bzr":     get_cmd_path("bzr"),
+    "svn":     get_cmd_path("svn"),
+    }
+
+vcs_commands = {
+    "pull"  : None,
+    "fetch" : None,
+    "update": None,
+    "info"  : None,
+    "status": None,
+    "diff"  : None,
+    "log"   : None,
+    "run"   : None
     }
 
 #--------- loop over repos ----------

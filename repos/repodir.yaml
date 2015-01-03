@@ -1,0 +1,20 @@
+# -*- mode: yaml; coding: utf-8; -*-
+# by Exaos Lee (exaos.lee@gmail.com)
+
+geant3:
+  name: geant3
+  vcs:  git
+  remotes:
+    origin: http://root.cern.ch/git/geant3.git
+
+include:
+  - rootpy
+
+git:
+  - geant3
+  - geant4_vmc
+  - root
+  - roottest
+  - rootdev
+  - rootjs
+  - cling
