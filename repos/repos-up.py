@@ -26,7 +26,7 @@ def repo_up(base,repo,vcs):
     pcwd = os.path.join(base,repo)
     print("\n==========================================\nPath: %s\n"%(pcwd))
     for c in vcs["cmds"]:
-        print("Exec: %s %s\n"%(pcwd,vcs["path"],c))
+        print("Exec: %s %s\n"%(vcs["path"],c))
         prog = [vcs["path"],] ; prog.extend(c.split())
         ret = sp.Popen(prog, cwd=pcwd)
         ret.wait()
