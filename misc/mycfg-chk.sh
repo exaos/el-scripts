@@ -4,9 +4,9 @@
 OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
 if [[ "${OS_TYPE}" = cygwin* ]] || [[ "${OS_TYPE}" = msys ]] || [[ "${OS_TYPE}" = mingw* ]]
 then
-    export WORKSPACE=/d/Exaos/Workspace
+    export VIVO_BASE=/d/Exaos/Workspace/vivodo
 else
-    export WORKSPACE=$HOME/Workspace
+    export VIVO_BASE=$HOME/Workspace/vivodo
 fi
 
 abs_path () {
@@ -20,16 +20,16 @@ abs_path () {
 }
 
 chk_cfg_emacs () {
-    [[ ! -d ${WORKSPACE}/exaos/myconfig/emacs/ ]] && exit 1
+    [[ ! -d ${VIVO_BASE}/myconfig/emacs/ ]] && exit 1
 
     echo "============ [DIFF] my-init.el ============"
-    diff ${WORKSPACE}/exaos/myconfig/emacs/my-init.el $HOME/.emacs.d/my-init.el
+    diff ${VIVO_BASE}/myconfig/emacs/my-init.el $HOME/.emacs.d/my-init.el
     echo "============ [DIFF] my-face.el ============"
-    diff ${WORKSPACE}/exaos/myconfig/emacs/my-face.el $HOME/.emacs.d/my-face.el
+    diff ${VIVO_BASE}/myconfig/emacs/my-face.el $HOME/.emacs.d/my-face.el
 
-    [[ ! -f ${WORKSPACE}/exaos/daily/myorg/my-org.el ]] && exit 1
+    [[ ! -f ${VIVO_BASE}/vivo/myorg/my-org.el ]] && exit 1
     echo "============ [DIFF] my-org.el ============="
-    diff ${WORKSPACE}/exaos/daily/myorg/my-org.el $HOME/.emacs.d/my-org.el
+    diff ${VIVO_BASE}/vivo/myorg/my-org.el $HOME/.emacs.d/my-org.el
 }
 
 case "$1" in

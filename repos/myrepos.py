@@ -9,11 +9,11 @@ import git
 
 #-----------------------------------------------------------
 myrepos = {
-    'myconfig'      : 'Workspace/exaos/myconfig',
-    'scripts'       : 'Workspace/exaos/scripts',
-    'emacs-starter' : 'Workspace/exaos/emacs-starter',
-    'site'          : 'Workspace/exaos/mysite',
-    'daily'         : 'Workspace/exaos/daily',
+    'myconfig'      : 'Workspace/vivodo/settings',
+    'scripts'       : 'Workspace/vivodo/scripts',
+    'emacs-starter' : 'Workspace/vivodo/emacs-starter',
+    'site'          : 'Workspace/vivodo/mysite',
+    'vivo'          : 'Workspace/vivodo/vivo',
     }
 
 #-----------------------------------------------------------

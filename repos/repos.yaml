@@ -5,19 +5,19 @@ exaos:
   desc: Exaos personal repositories
   type: group
   units:
-    - daily
+    - vivo
     - myconfig
     - mynotes
     - exaos-misc
     - exaos-utils
 
-daily:
+vivo:
   desc: 心蛛的日常工作内容
   upstreams:
     local:
-      - ~/Repos/daily.git
+      - ~/Repos/vivo.git
     bitbucket:
-      url: ssh://git@bitbucket.org/exaos/el-daily.git
+      url: ssh://git@bitbucket.org/exaos/el-vivo.git
       cmds: [ fetch, pull, push ]
 
 myconfig:

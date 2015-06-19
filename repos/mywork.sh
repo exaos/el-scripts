@@ -20,7 +20,7 @@ repos=(
     ${WORKSPACE}/vivodo/scripts
     ${WORKSPACE}/vivodo/settings
     ${WORKSPACE}/vivodo/emacs-starter
-    ${WORKSPACE}/vivodo/daily
+    ${WORKSPACE}/vivodo/vivo
 )
 
 sync_repo () {
