@@ -4,7 +4,7 @@
 
 DEPOT_BASE=${DEPOT_BASE:-/data/depot}
 DEPOT_DISK=${DEPOT_DISK:-EADEPOT}
-DEPOT_BOTS=${DEPOT_BOTS:-"Job Personal Topics"}
+DEPOT_BOTS=${DEPOT_BOTS:-"Job Personal Collections"}
 
 depot_status() {
     echo "==> [${DEPOT_BASE}: $1] \$ Status:"
