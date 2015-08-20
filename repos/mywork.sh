@@ -2,7 +2,7 @@
 
 OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
 WORKSPACE=${WORKSPACE:-$HOME/Workspace}
-LOCALREPOS=${LOCALREPOS:-$HOME/MyRepos}
+VLREPOS=${VLREPOS:-$HOME/MyRepos}
 
 abs_path () {
     if [ -d $1 ]; then
@@ -48,7 +48,7 @@ sync_host () {
 	RREPO_ROOT="${1}:Repos"
     else
 	if [ -z "$2" ] ; then
-            lrpath=${LOCALREPOS}
+            lrpath=${VLREPOS}
 	else
 	    lrpath="$2"
 	fi
