@@ -20,18 +20,18 @@ depot_sync() {
     cd ${OLDPWD}
 }
 
-depot_copy() {
-    echo "==> [${DEPOT_BASE}: $1] \$ Copy data to depot $2 ..."
-    cd ${DEPOT_BASE}/$1
-    git-annex copy --to $2 --not --in $2
-    cd ${OLDPWD}
-}
+# depot_copy() {
+#     echo "==> [${DEPOT_BASE}: $1] \$ Copy data to depot $2 ..."
+#     cd ${DEPOT_BASE}/$1
+#     git annex copy --all --auto --to $2 --not --in $2
+#     cd ${OLDPWD}
+# }
 
 depot_cmd() {
     echo "==> [${DEPOT_BASE}: $1] \$ $2"
-    BASE=${1}
+    local BASE=${1}
     shift 1
-    CMD=${1:-git}
+    local CMD=${1:-git}
     shift 1
     cd ${DEPOT_BASE}/${BASE}
     echo "[base:${BASE}] \$ ${CMD} ${@}"
@@ -39,10 +39,18 @@ depot_cmd() {
     cd ${OLDPWD}
 }
 
-cmd_all() {
-    for d in ${DEPOT_BOTS} ; do
-        depot_cmd $d $@
-    done
+depot_git_cmd() {
+    local BASE=${1}
+    shift 1
+    local GA_CMD=${@}
+    depot_cmd ${BASE} git ${GA_CMD}
+}
+
+depot_git_annex_cmd() {
+    local BASE=${1}
+    shift 1
+    local GA_CMD=${@}
+    depot_cmd ${BASE} git annex ${GA_CMD}
 }
 
 status_all() {
@@ -63,12 +71,32 @@ copy_all() {
     done
 }
 
+cmd_all() {
+    for d in ${DEPOT_BOTS} ; do
+        depot_cmd $d $@
+    done
+}
+
+git_all() {
+    for d in ${DEPOT_BOTS} ; do
+        depot_git_cmd $d $@
+    done
+}
+
+git_annex_all() {
+    for d in ${DEPOT_BOTS} ; do
+        depot_git_annex_cmd $d $@
+    done
+}
+
 usage() {
     echo "Usage: $0 <cmd> [<parameters>]"
     echo "Depot base path: ${DEPOT_BASE}"
     echo "Archive disk:    ${DEPOT_DISK}"
     echo "Handling depots: ${DEPOT_BOTS}"
     echo "Commands: status sync <cmd...>"
+    echo "Git command: git|g <cmd...>"
+    echo "Git annex commands: ga|annex <cmd...>"
 }
 
 if [[ -z "$1" ]]; then
@@ -84,12 +112,20 @@ case "$1" in
         DEST=${2:-${DEPOT_DISK}}
         sync_all ${DEST}
         ;;
-    cp | copy)
-        DEST=${2:-${DEPOT_DISK}}
-        copy_all ${DEST}
+    # cp | copy)
+    #     DEST=${2:-${DEPOT_DISK}}
+    #     copy_all ${DEST}
+    #     ;;
+    g | git)
+        shift 1
+        git_all $@
+        ;;
+    ga | annex)
+        shift 1
+        git_annex_all $@
         ;;
     *)
-        cmd_all "$@"
+        cmd_all $@
         ;;
 esac
 
