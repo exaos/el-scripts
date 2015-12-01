@@ -5,6 +5,21 @@ common:
     lend: ftp://gdo-nuclear.ucllnl.org/pub/
     G4LEND: ftp://gdo-nuclear.ucllnl.org/pub/G4LEND/
 
+10.01.p02:
+  gcc: 4.2.1
+  clhep: 2.2.0.4
+  data:
+    G4NDL: 4.5
+    G4EMLOW: 6.41
+    G4PhotonEvaporation: 3.1
+    G4RadioactiveDecay: 4.2
+    G4SAIDDATA: 1.1
+    G4NEUTRONXS: 1.4
+    G4ABLA: 3.0
+    G4PII: 1.3
+    RealSurface: 1.0
+    G4ENSDFSTATE: 1.0
+
 10.01.p01:
   gcc: 4.2.1
   clhep: 2.2.0.4
