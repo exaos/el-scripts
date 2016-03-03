@@ -19,13 +19,13 @@ repos=(
     ${WORKSPACE}/vivodo/mysite
     ${WORKSPACE}/vivodo/scripts
     ${WORKSPACE}/vivodo/settings
-    ${WORKSPACE}/vivodo/emacs-starter
+    ${WORKSPACE}/vivodo/dotspacemacs
     ${WORKSPACE}/vivodo/vivo
 )
 
 sync_repo () {
     [[ "$#" -ne 2 ]] && exit 1
-    
+
     echo "Working on $1 ..."
     echo "==============================="
     cd "$1"
