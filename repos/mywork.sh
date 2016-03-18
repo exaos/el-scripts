@@ -19,7 +19,8 @@ repos=(
     ${WORKSPACE}/vivodo/mysite
     ${WORKSPACE}/vivodo/scripts
     ${WORKSPACE}/vivodo/settings
-    ${WORKSPACE}/vivodo/dotspacemacs
+    # ${WORKSPACE}/vivodo/dotspacemacs
+    ${WORKSPACE}/vivodo/emacs-starter
     ${WORKSPACE}/vivodo/vivo
 )
 
