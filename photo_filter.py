@@ -7,6 +7,7 @@
 from PIL import Image
 from PIL.ExifTags import TAGS
 import shutil,os,os.path
+from time import gmtime,strftime
 
 def get_exif(fn):
     ret = {}
@@ -18,10 +19,12 @@ def get_exif(fn):
     return ret
 
 def get_isodate(fn):
-    exif = get_exif(fn)
-    yy = exif['DateTimeOriginal'][:4]
-    mm = exif['DateTimeOriginal'][5:7]
-    dd = exif['DateTimeOriginal'][8:10]
+    try:
+        exdate = get_exif(fn)['DateTimeOriginal']
+        yy,mm,dd = exdate[0:4],exdate[5:7],exdate[8:10]
+    except:
+        gt=strftime("%Y-%m-%d",gmtime(os.path.getmtime(fn)))
+        yy,mm,dd=gt[0:4],gt[5:7],gt[8:10]
     return yy,mm,dd
 
 def copy_image_to_isodate_dir(fn):
