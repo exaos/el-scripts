@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import os, sys
 
@@ -13,7 +13,7 @@ def fix_wrong_u8(dname, isRename=False):
     newf = get_u8fn_fixed(dname)
     print dname,
     if dname != newf:
-        print ":-->", newf
+        # print ":-->", newf
         if isRename: os.rename(dname, newf)
     else:
         print ": Filename is OK!"
@@ -27,8 +27,8 @@ def fix_wrong_u8(dname, isRename=False):
 
 if __name__=='__main__':
     if len(sys.argv)>=2:
-       isRename = True if '-f' in sys.argv else False
-       for fn in sys.argv[1:]: fix_wrong_u8(fn, isRename)
+        isRename = True if '-f' in sys.argv else False
+        for fn in sys.argv[1:]: fix_wrong_u8(fn, isRename)
     else:
-       print """Usage: %s [-f]  [file] [file] ..."""%sys.argv[0]
+        print """Usage: %s [-f]  [file] [file] ..."""%sys.argv[0]
 
