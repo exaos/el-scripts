@@ -16,11 +16,11 @@ abs_path () {
 
 #### Repositories monitered
 repos=(
-    ${WORKSPACE}/vivodo/mysite
+    ${WORKSPACE}/vivodo/doc/mysite
     ${WORKSPACE}/vivodo/scripts
     ${WORKSPACE}/vivodo/settings
     # ${WORKSPACE}/vivodo/dotspacemacs
-    ${WORKSPACE}/vivodo/emacs-starter
+    ${WORKSPACE}/vivodo/utils/emacs-starter
     ${WORKSPACE}/vivodo/vivo
 )
 
