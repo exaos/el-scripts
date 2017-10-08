@@ -5,6 +5,26 @@ common:
     lend: ftp://gdo-nuclear.ucllnl.org/pub/
     G4LEND: ftp://gdo-nuclear.ucllnl.org/pub/G4LEND/
 
+"10.03.p02":
+  date: 2017-07-27
+  compiler:
+    gcc: 4.8.5
+    clang: 3.8
+    msvc: 14.0-vs2015
+  clhep: 2.3.4.3
+  data:
+    G4NDL: 4.5
+    G4EMLOW: 6.50
+    G4PhotonEvaporation: 4.3.2
+    G4RadioactiveDecay: 5.1.1
+    G4SAIDDATA: 1.1
+    G4NEUTRONXS: 1.4
+    G4ABLA: 3.0
+    G4PII: 1.3
+    RealSurface: 1.0
+    G4ENSDFSTATE: 2.1
+    G4TENDL: 1.3
+
 "10.02.p01":
   date: 2016-02-26
   compiler:
