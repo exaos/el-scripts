@@ -1,0 +1,9 @@
+#!/bin/bash
+
+VUEROOT=$(dirname $(readlink -f $0))
+# Use sun-java6-jdk as default
+#JAVA=/usr/lib/jvm/java-6-sun/bin/java
+JAVA=java
+
+${JAVA} -jar ${VUEROOT}/VUE.jar "$@"
+

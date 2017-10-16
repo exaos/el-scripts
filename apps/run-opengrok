@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Ref: http://www.dazuiniu.com/blog/2010/05/12/install-opengrok-to-read-sources.html
+#
+# need to run {Bogo}: Tomcat 6.0.32
+
+OG_ROOT=$(dirname $(readlink -f $0))
+
+##
+export OPENGROK_CONFIGURATION=${OG_ROOT}/../Settings/myog.sh
+${OG_ROOT}/bin/OpenGrok "$@"
+

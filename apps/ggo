@@ -1,0 +1,9 @@
+#! /bin/sh
+GGOROOT=$(dirname $(readlink -f $0))
+#JAVA=/usr/lib/jvm/java-6-sun/jre/bin/java
+JAVA=`which java`
+# Startscript for gGo
+# Peter Strempel, 2002
+
+echo Starting gGo...
+${JAVA} -jar ${GGOROOT}/lib/gGo.jar $@

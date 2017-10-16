@@ -1,0 +1,9 @@
+#!/bin/bash
+
+YEDROOT=$(dirname $(readlink -f $0))
+# Use Oracle-java8-jdk as default
+JAVA=/usr/lib/jvm/jdk-8-oracle-x64/bin/java
+
+${JAVA} -jar ${YEDROOT}/yed.jar
+
+

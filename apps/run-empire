@@ -1,0 +1,11 @@
+#!/bin/bash
+
+EMPROOT=$(dirname $(readlink -f $0))
+TCLROOT=${EMPROOT}/../../ActiveTcl/8.4_amd64
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TCLROOT}/lib
+WISHCMD=${TCLROOT}/bin/wish
+WORKDIR=${EMPROOT}/work
+
+cd ${WORKDIR}
+${WISHCMD} ${EMPROOT}/scripts/Xrun.tcl
+
