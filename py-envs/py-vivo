@@ -1,12 +1,25 @@
 #!/bin/bash
 PY_VENV_ROOT=$HOME/Utils/py-envs/vivo
+export PIP_FORMAT=columns
+
 PY_VENV_CMD=$1
 if [ x${PY_VENV_CMD} == x ]; then
-   echo "Usage: $0 <command> [pars]"
+   echo "Usage: $0 <up|upgrade|list|command> [pars]"
    exit 0
 fi
 shift 1
 
 source ${PY_VENV_ROOT}/bin/activate
-${PY_VENV_ROOT}/bin/${PY_VENV_CMD} "$@"
+
+case "${PY_VENV_CMD}" in
+    ls|list)
+        pip list
+	;;
+    up|upgrade)
+	pkgs_list="$(pip freeze --local | grep -v ^-e | cut -d = -f 1)"
+	pip install -U ${pkgs_list}
+	;;
+    *)
+	${PY_VENV_ROOT}/bin/${PY_VENV_CMD} "$@"
+esac
 
