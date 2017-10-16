@@ -1,0 +1,4 @@
+#!/bin/sh
+# Java heap size, in megabytes; increase if you experience OutOfMemory errors (see quickstart.html)
+JAVA_HEAP_SIZE=96
+exec /usr/lib/jvm/jdk-8-oracle-x64/jre/bin/java -Xmx${JAVA_HEAP_SIZE}m ${JPICEDT} -classpath "${CLASSPATH}:/home/exaos/Utils/jpicedt/1.6-pre1:/home/exaos/Utils/jpicedt/1.6-pre1/lib/jpicedt.jar" jpicedt.JPicEdt "$@"

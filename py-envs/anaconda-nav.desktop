@@ -1,0 +1,18 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Categories=Application;Development
+Comment=Ananconda Navigator
+Encoding=UTF-8
+Exec=/home/exaos/Utils/py-envs/anaconda-nav
+GenericName=
+GenericName[zh]=
+Icon=/home/exaos/Utils/py-envs/anaconda-logo.png
+Name=anaconda-navigator
+Name[zh]=anaconda-navigator
+Path=/home/exaos/
+ServiceTypes=
+SwallowExec=
+SwallowTitle=
+Terminal=false
+TerminalOptions=
+Type=Application

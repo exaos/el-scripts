@@ -1,0 +1,12 @@
+#!/bin/bash
+PY_VENV_ROOT=$HOME/Utils/py-envs/vivo
+PY_VENV_CMD=$1
+if [ x${PY_VENV_CMD} == x ]; then
+   echo "Usage: $0 <command> [pars]"
+   exit 0
+fi
+shift 1
+
+source ${PY_VENV_ROOT}/bin/activate
+${PY_VENV_ROOT}/bin/${PY_VENV_CMD} "$@"
+

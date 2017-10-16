@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export SPARK_HOME=/opt/spark/current
+export PATH=${SPARK_HOME}/bin:$PATH
+export PYSPARK_PYTHON=/usr/bin/python3
+
+export PYSPARK_DRIVER_PYTHON=ipython
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+
+pyspark $@
+

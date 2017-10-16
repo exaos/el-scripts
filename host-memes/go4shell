@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# 
+
+########## Automatically generated login file ########
+
+# echo Configure Go4 v5.0.0 at /home/exaos/Utils/go4-5/share/go4
+
+##### ROOT-related settings ###########
+# export PATH=/usr/bin:$PATH
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/root5.34:$LD_LIBRARY_PATH
+
+##### Go4-related settings ###########
+export GO4SYS=/home/exaos/Utils/go4-5/share/go4
+export PATH=/home/exaos/Utils/go4-5/bin:$PATH
+export LD_LIBRARY_PATH=.:/home/exaos/Utils/go4-5/lib:$LD_LIBRARY_PATH
+
+zsh
+
