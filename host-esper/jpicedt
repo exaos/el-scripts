@@ -1,0 +1,8 @@
+#!/bin/sh
+# Java heap size, in megabytes; increase if you experience OutOfMemory errors (see quickstart.html)
+JAVA_EXEC=/usr/lib/jvm/java-8-openjdk/bin/java
+JAVA_HEAP_SIZE=96
+JAVA_CPATH="${CLASSPATH}:${HOME}/Utils/jpicedt/1.6-pre1:${HOME}/Utils/jpicedt/1.6-pre1/lib/jpicedt.jar"
+
+${JAVA_EXEC} -Xmx${JAVA_HEAP_SIZE}m ${JPICEDT} -classpath "${JAVA_CPATH}" jpicedt.JPicEdt "$@"
+

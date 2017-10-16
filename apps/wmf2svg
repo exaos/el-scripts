@@ -1,0 +1,5 @@
+#!/bin/bash
+
+W2SPATH=$HOME/Utils/wmf2svg
+
+java -jar ${W2SPATH}/wmf2svg.jar "$@"

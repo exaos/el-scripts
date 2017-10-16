@@ -1,0 +1,6 @@
+#!/bin/bash
+
+DTROOT=$(dirname $(readlink -f $0))
+JAVA=$(which java)
+
+${JAVA} -jar ${DTROOT}/DitaaEps.jar "$@"
