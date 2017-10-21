@@ -8,38 +8,45 @@ import sys
 import subprocess as sp
 import yaml
 
+
 def get_cmd_path(cmd):
     if os.path.isfile(cmd):
         return os.path.abspath(cmd)
     output = sp.Popen(["which", cmd], stdout=sp.PIPE).communicate()[0]
     return str(os.path.abspath(output.strip()))
 
+
 vcs_tools = {
-    "git":     get_cmd_path("git"),
+    "git": get_cmd_path("git"),
     "git_svn": get_cmd_path("git") + " svn",
-    "hg":      get_cmd_path("hg"),
-    "bzr":     get_cmd_path("bzr"),
-    "svn":     get_cmd_path("svn"),
-    }
+    "hg": get_cmd_path("hg"),
+    "bzr": get_cmd_path("bzr"),
+    "svn": get_cmd_path("svn"),
+}
 
 vcs_commands = {
-    "pull"  : None,
-    "fetch" : None,
+    "pull": None,
+    "fetch": None,
     "update": None,
-    "info"  : None,
+    "info": None,
     "status": None,
-    "diff"  : None,
-    "log"   : None,
-    "run"   : None
-    }
+    "diff": None,
+    "log": None,
+    "run": None
+}
 
 #--------- loop over repos ----------
+
+
 def repo_up(base, repo, vcs):
     pcwd = os.path.join(base, repo)
-    print("\n==========================================\nPath: {}\n".format(pcwd))
+    print("\n==========================================\nPath: {}\n".format(
+        pcwd))
     for c in vcs["cmds"]:
         print("Exec: {0} {1} {2}\n".format(pcwd, vcs["path"], c))
-        prog = [vcs["path"],]
+        prog = [
+            vcs["path"],
+        ]
         prog.extend(c.split())
         ret = sp.Popen(prog, cwd=pcwd)
         ret.wait()
@@ -47,14 +54,18 @@ def repo_up(base, repo, vcs):
             return (False, [pcwd, vcs["path"], c])
     return (True, None)
 
+
 def up_repos_dir(path):
     repos = yaml.load(open(os.path.join(path, "repos.yaml"), "r"))
     err_list = []
     for v in list(vcs_tools.keys()):
         if v not in repos or not repos[v]:
             continue
-        vcs = {"path": vcs_tools[v]["path"],}
-        if "cmds" in repos and v in repos["cmds"] and len(repos["cmds"][v]) > 0:
+        vcs = {
+            "path": vcs_tools[v]["path"],
+        }
+        if "cmds" in repos and v in repos["cmds"] and len(
+                repos["cmds"][v]) > 0:
             vcs["cmds"] = repos["cmds"][v]
         else:
             vcs["cmds"] = vcs_tools[v]["cmds"]
@@ -63,6 +74,7 @@ def up_repos_dir(path):
             if not bret:
                 err_list.append(err)
     return err_list
+
 
 def print_errors(e_l):
     n_err = 0
@@ -74,6 +86,7 @@ def print_errors(e_l):
             print("path: {}".format(e_l[i][j][0]))
             print("exec: {} {}\n".format(e_l[i][j][1], e_l[i][j][2]))
     print("\nTotal errors: {}".format(n_err))
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
