@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+BATIK_PATH=$(dirname $(readlink -f $0))
+BATIK_VER=1.9
+JAVA=$(which java)
+
+case "$1" in
+    help|h|--help|-h)
+        echo "Usage: $0 [rasterizer | slideshow | squiggle | svgpp | ttf2svg] [files]"
+        ;;
+    rasterizer)
+        shift 1
+	${JAVA} -jar ${BATIK_PATH}/batik-rasterizer-${BATIK_VER}.jar "$@"
+	;;
+    slideshow)
+        shift 1
+        ${JAVA} -jar ${BATIK_PATH}/batik-slideshow-${BATIK_VER}.jar "$@"
+        ;;
+    squiggle)
+        shift 1
+        ${JAVA} -jar ${BATIK_PATH}/batik-squiggle-${BATIK_VER}.jar "$@"
+        ;;
+    svgpp|pp)
+        shift 1
+        ${JAVA} -jar ${BATIK_PATH}/batik-svgpp-${BATIK_VER}.jar "$@"
+        ;;
+    ttf2svg)
+        shift 1
+        ${JAVA} -jar ${BATIK_PATH}/batik-ttf2svg-${BATIK_VER}.jar "$@"
+        ;;
+    *)
+        shift 1
+        ${JAVA} -jar ${BATIK_PATH}/batik-${BATIK_VER}.jar "$@"
+        ;;
+esac
+
