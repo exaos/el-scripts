@@ -1,8 +1,8 @@
 #!/bin/bash
 
 OS_TYPE=`uname -s | tr '[A-Z]' '[a-z]'`
-WORKSPACE=${WORKSPACE:-$HOME/Workspace}
-VLREPOS=${VLREPOS:-$HOME/MyRepos}
+WORKSPACE=${WORKSPACE:-$HOME/Laborejo}
+VLREPOS=${VLREPOS:-/data/repos/00-local/vivodo}
 
 abs_path () {
     if [ -d $1 ]; then
@@ -16,12 +16,12 @@ abs_path () {
 
 #### Repositories monitered
 repos=(
-    ${WORKSPACE}/vivodo/doc/mysite
-    ${WORKSPACE}/vivodo/scripts
-    ${WORKSPACE}/vivodo/settings
-    # ${WORKSPACE}/vivodo/dotspacemacs
-    ${WORKSPACE}/vivodo/utils/emacs/emacs-starter-vl
-    ${WORKSPACE}/vivodo/vivo
+    # ${WORKSPACE}/doc/mysite
+    ${WORKSPACE}/scripts
+    ${WORKSPACE}/settings
+    # ${WORKSPACE}/utils/emacs/dotspacemacs
+    ${WORKSPACE}/utils/emacs/emacs-starter-vl
+    ${WORKSPACE}/vivo
 )
 
 sync_repo () {
