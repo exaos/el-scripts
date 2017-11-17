@@ -31,6 +31,6 @@ JAVAOPTS="-Xmx1024M"
 ${JAVA_EXE} ${JAVAOPTS} \
 -Djava.library.path="${HV_PATH}/lib" \
 -Dhdfview.root="${HV_PATH}" \
--cp "lib/*:." \
+-cp "${HV_PATH}/lib/*" \
 hdf.view.HDFView "$@"
 
