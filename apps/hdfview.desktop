@@ -1,0 +1,20 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Categories=Application;Development
+Comment=HDFView 3.0.0
+Encoding=UTF-8
+Exec=/home/vivodo/Utils/HDFView-3.0.0/hdfview.sh %f
+GenericName=
+GenericName[zh]=
+Icon=/home/vivodo/Utils/HDFView-3.0.0/icons/hdf5.svg
+MimeType=application/x-hdf5
+Name=HDFView
+Name[zh]=HDFView
+Path=/home/vivodo
+ServiceTypes=
+SwallowExec=
+SwallowTitle=
+Terminal=false
+TerminalOptions=
+Type=Application
