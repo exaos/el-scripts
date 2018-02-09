@@ -20,7 +20,8 @@ repos=(
     ${WORKSPACE}/scripts
     ${WORKSPACE}/settings
     # ${WORKSPACE}/utils/emacs/dotspacemacs
-    ${WORKSPACE}/utils/emacs/emacs-starter-vl
+    # ${WORKSPACE}/utils/emacs/emacs-starter-vl
+    ${WORKSPACE}/utils/emacs/vl_prelude
     ${WORKSPACE}/vivo
 )
 
@@ -123,4 +124,3 @@ case "$1" in
 	repos_git $@
 	;;
 esac
-
