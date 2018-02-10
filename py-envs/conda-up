@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CONDA_PREFIX=${CONDA_PREFIX:-/opt/anaconda3}
+LD_LIBRARY_PATH=${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}
+source ${CONDA_PREFIX}/bin/activate root
+
+# update the base
+echo "[conda] ==> Update anaconda base environment ..."
+conda update -y --all
+echo "[conda] ==> Base environemt updated. DONE! "
+
+for j in "$@"; do
+    echo "[conda] ==> Update environment $j ..."
+    conda update -y --all -n $j
+    echo "[conda] ==> Environment \"$j\" updated. DONE! "
+done
+
