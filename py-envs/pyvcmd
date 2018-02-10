@@ -1,0 +1,40 @@
+#!/bin/bash
+
+## venv vars
+PY_VENV_BASE=${PY_VENV_BASE:-$HOME/Utils/py-envs}
+export PIP_FORMAT=columns
+
+##
+# get the env name: e.g., if '$0 == py-vivo', then 'env=vivo'
+#SCRIPT_NAME=$(basename $0)
+IFS='-' read -r -a SN_ARR <<< $(basename $0)
+if [[ ${#SN_ARR[@]} -lt 2 ]] ; then
+    echo "Not a proper-linked name."
+    exit 0
+fi
+PY_VENV_NAME=${SN_ARR[-1]}
+PY_VENV_PATH=${PY_VENV_BASE}/${PY_VENV_NAME}
+
+############
+PY_VENV_CMD=$1
+if [ x${PY_VENV_CMD} == x ]; then
+   echo "Usage: $0 <up|upgrade|list|command> [pars]"
+   exit 0
+fi
+shift 1
+
+# Active venv environment
+source ${PY_VENV_PATH}/bin/activate
+
+# execute commands
+case "${PY_VENV_CMD}" in
+    ls|list)
+        pip list
+	;;
+    up|upgrade)
+	pkgs_list="$(pip freeze --local | grep -v ^-e | cut -d = -f 1)"
+	pip install -U ${pkgs_list}
+	;;
+    *)
+	${PY_VENV_PATH}/bin/${PY_VENV_CMD} "$@"
+esac

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-CONDA_PREFIX=/opt/anaconda3
+CONDA_PREFIX=${CONDA_PREFIX:-/opt/anaconda3}
 LD_LIBRARY_PATH=${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH}
 source ${CONDA_PREFIX}/bin/activate root
 
 conda "$@"
-
